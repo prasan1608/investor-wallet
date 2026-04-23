@@ -1,0 +1,2471 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2457a6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="profes">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" href="./assets/profes-logo.png">
+<link rel="apple-touch-icon" href="./assets/profes-logo.png">
+<script src="./config.js"></script>
+<title>profes Investor Wallet Dashboard</title>
+<style>
+:root{
+  --bg:#eef5fb;
+  --paper:rgba(255,255,255,.58);
+  --paper-strong:#ffffff;
+  --line:rgba(205,220,239,.72);
+  --ink:#1d2230;
+  --muted:#64728a;
+  --brand:#2457a6;
+  --brand-strong:#8fbe3e;
+  --brand-dark:#202026;
+  --brand-soft:#e9f0ff;
+  --alt-soft:#eff7de;
+  --gold:#d8c28a;
+  --shadow:0 28px 70px rgba(20,34,58,.14);
+  --shadow-soft:0 14px 30px rgba(36,87,166,.10);
+  --glow:0 0 0 1px rgba(255,255,255,.45) inset;
+  --radius-xl:30px;
+  --radius-lg:22px;
+  --radius-md:16px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Trebuchet MS","Segoe UI",Tahoma,Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(36,87,166,.20), transparent 22%),
+    radial-gradient(circle at 88% 4%, rgba(143,190,62,.20), transparent 22%),
+    radial-gradient(circle at 50% 100%, rgba(216,194,138,.15), transparent 28%),
+    linear-gradient(180deg, #fdfefe 0%, #edf4fb 44%, #f7fbff 100%);
+}
+button,input,select{font:inherit}
+button{border:none;cursor:pointer}
+.auth-shell{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+.auth-card{
+  width:min(620px,100%);
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:0;
+  background:linear-gradient(180deg, rgba(255,255,255,.60), rgba(255,255,255,.34));
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:var(--radius-xl);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(22px) saturate(150%);
+  -webkit-backdrop-filter:blur(22px) saturate(150%);
+  box-shadow:var(--shadow), var(--glow);
+  overflow:hidden;
+}
+.auth-side,.auth-panel{padding:28px}
+.auth-side{
+  display:grid;
+  gap:14px;
+  justify-items:start;
+  padding-bottom:10px;
+  background:
+    radial-gradient(circle at top left, rgba(36,87,166,.10), transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,.70), rgba(239,246,255,.42));
+  border-bottom:1px solid rgba(213,225,241,.6);
+}
+.auth-panel{display:grid;gap:14px;align-content:start}
+.shell{width:min(1500px,100%);margin:0 auto;padding:28px;display:grid;gap:20px}
+.hero,.panel,.kpi,.table-card,.login-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.58), rgba(255,255,255,.32));
+  border:1px solid rgba(255,255,255,.52);
+  border-radius:var(--radius-xl);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(18px) saturate(145%);
+  -webkit-backdrop-filter:blur(18px) saturate(145%);
+  box-shadow:var(--shadow), var(--glow);
+}
+.hero{
+  position:relative;
+  overflow:hidden;
+  padding:28px;
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(340px,.9fr);
+  gap:18px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.62), rgba(245,250,255,.36)),
+    radial-gradient(circle at top right, rgba(143,190,62,.14), transparent 28%);
+}
+.hero:before{
+  content:"";
+  position:absolute;
+  left:-80px;
+  bottom:-90px;
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(36,87,166,.18), transparent 68%);
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  right:-30px;
+  top:-40px;
+  width:220px;
+  height:220px;
+  border-radius:40px;
+  transform:rotate(28deg);
+  background:linear-gradient(135deg, rgba(36,87,166,.08), rgba(143,190,62,.12));
+}
+.hero > *{position:relative;z-index:1}
+.brand-lockup{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  margin-bottom:4px;
+}
+.brand-logo{
+  display:block;
+  width:min(360px,100%);
+  max-width:100%;
+  height:auto;
+  object-fit:contain;
+  filter:drop-shadow(0 14px 34px rgba(30,40,65,.12));
+}
+.brand-logo-svg{
+  width:min(260px,72vw);
+  height:auto;
+}
+.auth-title{
+  margin:0;
+  font-size:clamp(28px,4vw,42px);
+  line-height:1.05;
+  letter-spacing:-.04em;
+}
+.auth-copy{
+  margin:0;
+  max-width:46ch;
+}
+.eyebrow{margin:0 0 10px;color:var(--brand-strong);font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:800}
+h1{margin:0 0 10px;font-size:clamp(34px,4vw,54px);line-height:1;letter-spacing:-.04em}
+h2{margin:0;font-size:24px;letter-spacing:-.03em}
+h3{margin:0;font-size:18px}
+.muted{color:var(--muted);line-height:1.65}
+.hero-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:18px}
+.mini-stat{padding:16px 18px;border-radius:18px;background:rgba(255,255,255,.44);border:1px solid rgba(255,255,255,.52)}
+.mini-stat{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9), 0 10px 22px rgba(30,46,78,.06);
+}
+.mini-stat span{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.mini-stat strong{font-size:24px;line-height:1.1}
+.login-card{padding:22px;display:grid;gap:14px;align-content:start;background:
+  linear-gradient(180deg, rgba(255,255,255,.72), rgba(242,247,255,.42)),
+  radial-gradient(circle at top right, rgba(143,190,62,.12), transparent 30%)}
+.tab-row{display:flex;gap:10px;flex-wrap:wrap}
+.tab-btn,.btn{
+  min-height:46px;
+  padding:0 18px;
+  border-radius:999px;
+  font-weight:800;
+}
+.tab-btn{background:rgba(255,255,255,.62);color:var(--ink);border:1px solid rgba(255,255,255,.58)}
+.tab-btn.active,.btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand-strong));color:#fff}
+.btn-secondary{background:rgba(255,255,255,.64);color:var(--ink);border:1px solid rgba(255,255,255,.58)}
+.btn,.tab-btn{
+  box-shadow:0 10px 22px rgba(17,31,58,.08);
+}
+.field{display:grid;gap:8px}
+.field label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:800}
+input,select{
+  width:100%;
+  min-height:52px;
+  padding:0 16px;
+  border-radius:16px;
+  border:1px solid rgba(209,223,241,.88);
+  background:rgba(255,255,255,.78);
+  color:var(--ink);
+  outline:none;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.92);
+}
+.status{min-height:18px;font-size:13px;color:var(--muted)}
+.hidden{display:none !important}
+.assumption-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+.assumption-item{padding:14px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.assumption-item .field + .field{margin-top:10px}
+.assumption-note{
+  margin-top:10px;
+  font-size:14px;
+  line-height:1.5;
+  color:var(--muted);
+}
+.assumption-section{
+  display:grid;
+  gap:14px;
+}
+.section-title{
+  margin:0;
+  font-size:12px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:800;
+}
+.modal-backdrop{position:fixed;inset:0;background:rgba(22,32,48,.42);backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .18s ease;z-index:50}
+.modal-backdrop.open{opacity:1;pointer-events:auto}
+.modal{position:fixed;top:50%;left:50%;width:min(920px,calc(100vw - 24px));max-height:88vh;overflow:hidden;transform:translate(-50%,-46%);opacity:0;pointer-events:none;transition:transform .18s ease,opacity .18s ease;z-index:51;background:var(--paper-strong);border:1px solid var(--line);border-radius:26px;box-shadow:0 24px 60px rgba(24,33,52,.18);display:grid;grid-template-rows:auto 1fr auto}
+.modal{background:linear-gradient(180deg, rgba(255,255,255,.78), rgba(248,251,255,.58));backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);box-shadow:var(--shadow), var(--glow)}
+.modal.open{transform:translate(-50%,-50%);opacity:1;pointer-events:auto}
+.modal-head,.modal-foot{padding:18px 20px;border-bottom:1px solid var(--line)}
+.modal-foot{border-bottom:none;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end}
+.modal-body{padding:20px;overflow:auto;display:grid;gap:14px;background:linear-gradient(180deg, rgba(252,254,255,.45) 0%, rgba(244,248,252,.22) 100%)}
+.preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.kpi-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kpi-row-five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.kpi{padding:20px 22px;min-height:138px;display:flex;flex-direction:column;justify-content:space-between}
+.kpi{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.74), rgba(246,250,255,.40)),
+    radial-gradient(circle at top right, rgba(143,190,62,.08), transparent 26%);
+}
+.kpi.clickable{
+  position:relative;
+  cursor:pointer;
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+  touch-action:manipulation;
+}
+.kpi.clickable:after{
+  content:"View details";
+  position:absolute;
+  right:18px;
+  bottom:16px;
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--brand);
+  font-weight:800;
+  opacity:.76;
+}
+.kpi.clickable:hover,
+.kpi.clickable:focus-visible{
+  transform:translateY(-2px);
+  border-color:rgba(36,87,166,.28);
+  box-shadow:0 18px 38px rgba(24,44,78,.14), var(--glow);
+}
+.kpi.clickable:active{transform:translateY(0)}
+.kpi-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.kpi-label{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.kpi-value{font-size:28px;line-height:1.05;font-weight:900;letter-spacing:-.03em}
+.kpi-sub{font-size:13px;color:var(--muted)}
+.kpi-icon{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;font-size:22px}
+.tone-a{background:var(--brand-soft);color:var(--brand)}
+.tone-b{background:var(--alt-soft);color:var(--brand-strong)}
+.tone-c{background:#edf1f7;color:var(--brand-dark)}
+.tone-d{background:#eef6e5;color:#5d8f1e}
+.content-grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.95fr);gap:18px}
+.table-card,.panel{padding:18px}
+.table-card,.panel{
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.68), rgba(247,250,255,.34));
+}
+.table-head{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;margin-bottom:14px}
+.subtle{font-size:13px;color:var(--muted)}
+.table-wrap{overflow:auto;max-height:560px;border:1px solid rgba(214,226,241,.82);border-radius:18px;background:rgba(255,255,255,.68);box-shadow:inset 0 1px 0 rgba(255,255,255,.92)}
+.table-wrap{
+  scrollbar-width:thin;
+  scrollbar-color:rgba(36,87,166,.34) rgba(255,255,255,.18);
+}
+table{width:max-content;min-width:100%;border-collapse:collapse}
+th,td{padding:11px 14px;border-bottom:1px solid #edf2f6;text-align:left;white-space:nowrap;font-size:13px}
+th{position:sticky;top:0;background:linear-gradient(135deg,var(--brand-dark),var(--brand));color:#fff;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.rank-list{display:grid;gap:10px}
+.rank-item{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border-radius:16px;background:rgba(255,255,255,.85);border:1px solid var(--line)}
+.rank-badge{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand);font-weight:800}
+.rank-name{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rank-value{font-weight:800}
+.empty{padding:26px;border-radius:18px;border:1px dashed var(--line);background:#fff;text-align:center;color:var(--muted)}
+.stack{display:grid;gap:18px}
+.footer-note{font-size:12px;color:var(--muted)}
+.summary-table button{
+  width:100%;
+  display:grid;
+  grid-template-columns:minmax(220px,.95fr) minmax(0,1fr);
+  padding:0;
+  border:none;
+  background:transparent;
+  text-align:left;
+}
+.summary-table button span{
+  padding:11px 14px;
+  border-bottom:1px solid #edf2f6;
+}
+.summary-table button .summary-label{
+  background:linear-gradient(135deg,var(--brand-dark),var(--brand));
+  color:#fff;
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-weight:800;
+}
+.summary-table button .summary-value{
+  background:#fff;
+  color:var(--ink);
+}
+.summary-table button:hover .summary-label{
+  filter:brightness(1.06);
+}
+.summary-table button:hover .summary-value{
+  background:#f8fbff;
+}
+.detail-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:12px;
+}
+.detail-stat{
+  padding:14px 16px;
+  border-radius:18px;
+  border:1px solid rgba(214,226,241,.9);
+  background:rgba(255,255,255,.8);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.92);
+}
+.detail-stat span{
+  display:block;
+  font-size:11px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:8px;
+  font-weight:800;
+}
+.detail-stat strong{
+  display:block;
+  font-size:24px;
+  line-height:1.1;
+  letter-spacing:-.03em;
+}
+.detail-copy{
+  padding:14px 16px;
+  border-radius:18px;
+  border:1px solid rgba(214,226,241,.9);
+  background:rgba(255,255,255,.72);
+  color:var(--muted);
+  line-height:1.6;
+}
+.loader-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:80;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  background:rgba(236,244,252,.42);
+  backdrop-filter:blur(12px) saturate(145%);
+  -webkit-backdrop-filter:blur(12px) saturate(145%);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .18s ease;
+}
+.loader-backdrop.open{
+  opacity:1;
+  pointer-events:auto;
+}
+.loader-card{
+  width:min(360px,100%);
+  padding:26px 22px;
+  border-radius:26px;
+  border:1px solid rgba(255,255,255,.72);
+  background:linear-gradient(180deg, rgba(255,255,255,.82), rgba(244,249,255,.58));
+  box-shadow:var(--shadow), var(--glow);
+  display:grid;
+  gap:14px;
+  justify-items:center;
+  text-align:center;
+}
+.loader-mark{
+  width:68px;
+  height:68px;
+  border-radius:22px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg, rgba(36,87,166,.14), rgba(143,190,62,.18));
+  position:relative;
+  overflow:hidden;
+}
+.loader-mark:before{
+  content:"";
+  position:absolute;
+  inset:10px;
+  border-radius:18px;
+  border:3px solid rgba(36,87,166,.18);
+  border-top-color:var(--brand);
+  border-right-color:var(--brand-strong);
+  animation:loaderSpin 1s linear infinite;
+}
+.loader-mark span{
+  position:relative;
+  z-index:1;
+  font-size:22px;
+  font-weight:900;
+  color:var(--brand-dark);
+}
+.loader-title{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+.loader-copy{
+  color:var(--muted);
+  line-height:1.6;
+}
+.install-row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+@keyframes loaderSpin{
+  to{transform:rotate(360deg)}
+}
+@media (max-width:1180px){
+  .hero,.content-grid,.kpi-row,.hero-stats{grid-template-columns:1fr 1fr}
+  .kpi-row-five{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .preview-grid{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  body{background:
+    radial-gradient(circle at 18% 6%, rgba(36,87,166,.18), transparent 24%),
+    radial-gradient(circle at 84% 5%, rgba(143,190,62,.18), transparent 22%),
+    linear-gradient(180deg, #fbfdff 0%, #eef5fb 56%, #f7fbff 100%)}
+  .shell{padding:12px;gap:14px}
+  .hero,.content-grid,.kpi-row,.kpi-row-five,.hero-stats{grid-template-columns:1fr}
+  .assumption-list{grid-template-columns:1fr}
+  .auth-shell{padding:14px}
+  .auth-card{grid-template-columns:1fr}
+  .auth-panel{order:2}
+  .auth-side{order:1}
+  .brand-lockup{margin-bottom:10px}
+  .brand-logo{width:min(220px,74vw)}
+  .brand-logo-svg{width:min(220px,74vw)}
+  .auth-side,.auth-panel,.hero,.login-card,.table-card,.panel,.kpi{padding:18px}
+  h1{font-size:clamp(28px,10vw,38px);line-height:1.04}
+  h2{font-size:21px}
+  .muted{line-height:1.55}
+  .tab-row{display:grid;grid-template-columns:1fr;gap:10px}
+  .tab-row .btn,.tab-row .tab-btn{width:100%}
+  .modal{width:calc(100vw - 12px);max-height:92vh;border-radius:22px}
+  .modal-head,.modal-body,.modal-foot{padding:16px}
+  .modal-foot{flex-direction:column-reverse}
+  .modal-foot .btn{width:100%}
+  .install-row{display:grid;grid-template-columns:1fr}
+  .mini-stat{padding:14px 16px}
+  .mini-stat strong{font-size:22px}
+  .kpi{min-height:auto;padding:18px 18px 44px}
+  .kpi.clickable:after{left:18px;right:auto;bottom:14px;font-size:10px}
+  .kpi-top{align-items:center}
+  .kpi-value{font-size:24px}
+  .kpi-icon{width:48px;height:48px;border-radius:16px;font-size:20px}
+  .table-head{align-items:flex-start;flex-direction:column}
+  .table-card,.panel{padding:16px}
+  .table-wrap{max-height:none;border-radius:16px}
+  table{min-width:720px}
+  .summary-table button{grid-template-columns:1fr}
+  .summary-table button .summary-label{border-bottom:none}
+  .summary-table button .summary-value{border-top:1px solid #edf2f6}
+  .rank-item{grid-template-columns:auto 1fr;grid-template-areas:"badge name" "badge value"}
+  .rank-badge{grid-area:badge}
+  .rank-name{grid-area:name}
+  .rank-value{grid-area:value}
+  th,td{padding:10px 12px;font-size:12px}
+  .detail-grid{grid-template-columns:1fr}
+  .detail-stat strong{font-size:22px}
+  .loader-card{padding:22px 18px;border-radius:22px}
+  .loader-title{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div id="authShell" class="auth-shell">
+  <div class="auth-card">
+    <section class="auth-side">
+      <div class="brand-lockup">
+        <svg class="brand-logo brand-logo-svg" viewBox="0 0 760 210" role="img" aria-label="profes logo">
+          <rect width="760" height="210" fill="transparent"></rect>
+          <g fill="#232326" font-family="'Avenir Next Rounded','Trebuchet MS','Segoe UI',sans-serif" font-weight="600" letter-spacing="-8">
+            <text x="28" y="122" font-size="132">pr</text>
+            <text x="338" y="122" font-size="132">fes</text>
+          </g>
+          <circle cx="292" cy="86" r="39" fill="#2d59c8"></circle>
+          <path d="M273 64c10-9 22-12 34-10 4 1 8 0 11-4 4-5 9-6 14-2 5 4 5 10 1 15-4 5-4 10 1 14 7 6 9 14 6 22-2 6-7 9-13 8-10-2-18 1-24 9-5 6-13 8-21 6-7-2-11-7-11-13 0-8-4-15-11-19-7-5-9-12-6-18 3-5 8-7 14-5 4 1 7-1 9-3 1-1 3-3 5-5z" fill="#9acc42"></path>
+          <path d="M243 73c6 3 10 8 10 14 0 5-2 9-6 12-4 3-5 8-3 13 2 5 1 10-3 13-4 3-9 2-13-2-9-9-13-20-11-32 2-10 8-18 18-24 4-2 8-2 11 1 3 3 2 8-3 11z" fill="#9acc42"></path>
+          <path d="M109 138h447" stroke="#9acc42" stroke-width="5" stroke-linecap="round"></path>
+          <circle cx="545" cy="138" r="11" fill="#2d2f35"></circle>
+          <circle cx="579" cy="138" r="16" fill="#2d59c8"></circle>
+          <circle cx="616" cy="138" r="11" fill="#9acc42"></circle>
+        </svg>
+      </div>
+      <p class="eyebrow">Secure Login</p>
+      <h1 class="auth-title">Enter your dashboard.</h1>
+      <p class="muted auth-copy">Select your role, sign in, and continue to the right workspace.</p>
+    </section>
+    <section class="auth-panel">
+      <div class="tab-row" id="roleSwitcher">
+        <button class="tab-btn active" id="roleAdminButton" type="button">Admin</button>
+        <button class="tab-btn" id="roleInvestorButton" type="button">Investor</button>
+        <button class="tab-btn" id="roleEmployeeButton" type="button">Employee</button>
+      </div>
+      <div id="authAdminPanel">
+        <h2>Admin login</h2>
+        <div class="field">
+          <label for="authAdminUsername">Username</label>
+          <input id="authAdminUsername" type="text" value="admin">
+        </div>
+        <div class="field">
+          <label for="authAdminPassword">Password</label>
+          <input id="authAdminPassword" type="password" value="password">
+        </div>
+        <button class="btn btn-primary" id="enterAdminButton" type="button">Enter Admin Dashboard</button>
+      </div>
+      <div id="authInvestorPanel" class="hidden">
+        <h2>Investor login</h2>
+        <div class="field">
+          <label for="authInvestorMobile">Investor Username / Mobile</label>
+          <input id="authInvestorMobile" type="text" placeholder="Enter 10-digit mobile number" maxlength="15">
+        </div>
+        <div class="field">
+          <label for="authInvestorPassword">Password</label>
+          <input id="authInvestorPassword" type="password" value="password">
+        </div>
+        <button class="btn btn-primary" id="enterInvestorButton" type="button">Open Investor Wallet</button>
+      </div>
+      <div id="authEmployeePanel" class="hidden">
+        <h2>Employee login</h2>
+        <div class="field">
+          <label for="authEmployeeUsername">Username</label>
+          <input id="authEmployeeUsername" type="text" value="employee">
+        </div>
+        <div class="field">
+          <label for="authEmployeePassword">Password</label>
+          <input id="authEmployeePassword" type="password" value="password">
+        </div>
+        <button class="btn btn-primary" id="enterEmployeeButton" type="button">Open Employee Panel</button>
+      </div>
+      <div id="authStatusText" class="status">Choose a role to continue.</div>
+      <div class="install-row">
+        <button class="btn btn-secondary hidden" id="installAppButton" type="button">Install profes App</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div id="appShell" class="hidden">
+<div class="shell">
+  <section class="hero">
+    <div>
+      <div class="brand-lockup">
+        <svg class="brand-logo brand-logo-svg" viewBox="0 0 760 210" role="img" aria-label="profes logo">
+          <rect width="760" height="210" fill="transparent"></rect>
+          <g fill="#232326" font-family="'Avenir Next Rounded','Trebuchet MS','Segoe UI',sans-serif" font-weight="600" letter-spacing="-8">
+            <text x="28" y="122" font-size="132">pr</text>
+            <text x="338" y="122" font-size="132">fes</text>
+          </g>
+          <circle cx="292" cy="86" r="39" fill="#2d59c8"></circle>
+          <path d="M273 64c10-9 22-12 34-10 4 1 8 0 11-4 4-5 9-6 14-2 5 4 5 10 1 15-4 5-4 10 1 14 7 6 9 14 6 22-2 6-7 9-13 8-10-2-18 1-24 9-5 6-13 8-21 6-7-2-11-7-11-13 0-8-4-15-11-19-7-5-9-12-6-18 3-5 8-7 14-5 4 1 7-1 9-3 1-1 3-3 5-5z" fill="#9acc42"></path>
+          <path d="M243 73c6 3 10 8 10 14 0 5-2 9-6 12-4 3-5 8-3 13 2 5 1 10-3 13-4 3-9 2-13-2-9-9-13-20-11-32 2-10 8-18 18-24 4-2 8-2 11 1 3 3 2 8-3 11z" fill="#9acc42"></path>
+          <path d="M109 138h447" stroke="#9acc42" stroke-width="5" stroke-linecap="round"></path>
+          <circle cx="545" cy="138" r="11" fill="#2d2f35"></circle>
+          <circle cx="579" cy="138" r="16" fill="#2d59c8"></circle>
+          <circle cx="616" cy="138" r="11" fill="#9acc42"></circle>
+        </svg>
+      </div>
+      <p class="eyebrow" id="heroEyebrow">profes Investor Wallet</p>
+      <h1 id="heroTitle">Daily investment growth, profit accrual, and maturity tracking.</h1>
+      <p class="muted" id="heroCopy">
+        This dashboard reads the Google Sheet live, so whenever the `Daily Schedule` tab changes,
+        both the admin view and the investor wallet refresh with the latest principal, day-wise profit,
+        and maturity withdrawal values.
+      </p>
+    </div>
+    <div class="login-card">
+      <div id="adminIntro">
+        <h2 id="adminIntroTitle">Admin command dashboard</h2>
+        <p class="muted" id="adminIntroCopy">See total investment exposure, live accrued profit, maturity pipeline, and investor wallet ranking.</p>
+        <div class="tab-row">
+          <button class="btn btn-secondary" id="openCreateInvestorButton" type="button">Create Investor</button>
+          <button class="btn btn-secondary" id="openCreateEmployeeButton" type="button">Create Employee</button>
+        </div>
+      </div>
+      <div id="investorLogin" class="hidden">
+        <h2 id="investorIntroTitle">Investor wallet access</h2>
+        <p class="muted" id="investorIntroCopy">Open your wallet with your registered mobile number and review live profit, value, and withdrawal status.</p>
+        <div class="field">
+          <label for="mobileInput">Investor Mobile Number</label>
+          <input id="mobileInput" type="text" placeholder="Enter 10-digit mobile number" maxlength="15">
+        </div>
+        <div class="tab-row">
+          <button class="btn btn-primary" id="walletLoginButton" type="button">Open Wallet</button>
+          <button class="btn btn-secondary" id="walletRefreshButton" type="button">Refresh Wallet</button>
+        </div>
+      </div>
+      <div id="employeePanel" class="hidden">
+        <h2 id="employeeIntroTitle">Employee assumptions panel</h2>
+        <p class="muted" id="employeeIntroCopy">Create requirement snapshots from assumptions and then add investor funding against each requirement.</p>
+        <div class="tab-row">
+          <button class="btn btn-primary" id="openAssumptionsButton" type="button">Add Assumptions</button>
+          <button class="btn btn-secondary" id="openRequirementButton" type="button">Create Requirement</button>
+          <button class="btn btn-secondary" id="refreshAssumptionsButton" type="button">Refresh Assumptions</button>
+          <button class="btn btn-secondary" id="openInvestmentButton" type="button">Add Investment</button>
+          <button class="btn btn-secondary" id="downloadPreviewButton" type="button">Download PDF</button>
+        </div>
+      </div>
+      <div id="statusText" class="status">Loading live sheet data...</div>
+      <div class="tab-row">
+        <button class="btn btn-secondary" id="logoutButton" type="button">Logout</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="adminView" class="stack">
+    <section class="kpi-row">
+      <article class="kpi clickable" data-kpi="admin-principal" tabindex="0" role="button" aria-label="Open total investment details">
+        <div class="kpi-top"><div><div class="kpi-label">Total Investment</div><div id="adminPrincipal" class="kpi-value">0</div></div><div class="kpi-icon tone-a">I</div></div>
+        <div id="adminPrincipalSub" class="kpi-sub">Principal deployed across all records</div>
+      </article>
+      <article class="kpi clickable" data-kpi="admin-accrued" tabindex="0" role="button" aria-label="Open accrued profit details">
+        <div class="kpi-top"><div><div class="kpi-label">Accrued Profit</div><div id="adminAccrued" class="kpi-value">0</div></div><div class="kpi-icon tone-b">P</div></div>
+        <div id="adminAccruedSub" class="kpi-sub">Profit earned till today</div>
+      </article>
+      <article class="kpi clickable" data-kpi="admin-wallet" tabindex="0" role="button" aria-label="Open wallet value details">
+        <div class="kpi-top"><div><div class="kpi-label">Wallet Value</div><div id="adminWallet" class="kpi-value">0</div></div><div class="kpi-icon tone-c">W</div></div>
+        <div id="adminWalletSub" class="kpi-sub">Principal plus accrued profit</div>
+      </article>
+      <article class="kpi clickable" data-kpi="admin-withdrawable" tabindex="0" role="button" aria-label="Open withdrawable details">
+        <div class="kpi-top"><div><div class="kpi-label">Withdrawable</div><div id="adminWithdrawable" class="kpi-value">0</div></div><div class="kpi-icon tone-d">M</div></div>
+        <div id="adminWithdrawableSub" class="kpi-sub">Only matured investments</div>
+      </article>
+    </section>
+
+    <section class="stack">
+      <div class="table-head"><div><h3>Today's KPI</h3><div class="subtle">Requirement funding status for today</div></div></div>
+      <section class="kpi-row-five">
+        <article class="kpi clickable" data-kpi="admin-today-requirement" tabindex="0" role="button" aria-label="Open today's requirement details">
+          <div class="kpi-top"><div><div class="kpi-label">Today's Requirement</div><div id="adminTodayRequirement" class="kpi-value">0</div></div><div class="kpi-icon tone-a">T</div></div>
+          <div class="kpi-sub">Total amount required for today's requirement</div>
+        </article>
+        <article class="kpi clickable" data-kpi="admin-today-funded" tabindex="0" role="button" aria-label="Open today's funded details">
+          <div class="kpi-top"><div><div class="kpi-label">Today's Funded</div><div id="adminTodayFunded" class="kpi-value">0</div></div><div class="kpi-icon tone-b">F</div></div>
+          <div class="kpi-sub">Investor funding linked to today's requirement</div>
+        </article>
+        <article class="kpi clickable" data-kpi="admin-today-balance" tabindex="0" role="button" aria-label="Open today's balance details">
+          <div class="kpi-top"><div><div class="kpi-label">Today's Balance</div><div id="adminTodayBalance" class="kpi-value">0</div></div><div class="kpi-icon tone-c">B</div></div>
+          <div class="kpi-sub">Remaining amount to complete today's requirement</div>
+        </article>
+        <article class="kpi clickable" data-kpi="admin-today-investors" tabindex="0" role="button" aria-label="Open today's investors details">
+          <div class="kpi-top"><div><div class="kpi-label">Today's Investors</div><div id="adminTodayInvestors" class="kpi-value">0</div></div><div class="kpi-icon tone-d">N</div></div>
+          <div class="kpi-sub">Unique investors funding today's requirement</div>
+        </article>
+        <article class="kpi clickable" data-kpi="admin-today-withdrawal" tabindex="0" role="button" aria-label="Open today's withdrawal details">
+          <div class="kpi-top"><div><div class="kpi-label">Today's Withdrawal</div><div id="adminTodayWithdrawal" class="kpi-value">0</div></div><div class="kpi-icon tone-b">M</div></div>
+          <div class="kpi-sub">Amount becoming withdrawable today</div>
+        </article>
+      </section>
+    </section>
+
+    <section class="content-grid">
+      <article class="table-card">
+        <div class="table-head"><div><h3>Investor Wallet Ranking</h3><div class="subtle">Top investor balances</div></div></div>
+        <div id="adminRankList" class="rank-list"></div>
+      </article>
+      <article class="table-card">
+        <div class="table-head"><div><h3>Investment Requirements</h3><div class="subtle" id="adminSnapshotText">Waiting for data</div></div></div>
+        <div class="table-wrap">
+          <table class="summary-table">
+            <tbody>
+              <tr><td colspan="2" id="adminRequirementSummary"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </section>
+
+    <article class="table-card">
+      <div class="table-head"><div><h3>Investor Ledger</h3><div class="subtle">One line per investor from the live sheet</div></div></div>
+      <div id="adminTable" class="table-wrap"><div class="empty">Loading investor summary...</div></div>
+    </article>
+  </section>
+
+  <section id="investorView" class="hidden">
+    <section class="kpi-row">
+      <article class="kpi clickable" data-kpi="investor-principal" tabindex="0" role="button" aria-label="Open investor total investment details">
+        <div class="kpi-top"><div><div class="kpi-label">Total Investment</div><div id="investorPrincipal" class="kpi-value">0</div></div><div class="kpi-icon tone-a">I</div></div>
+        <div id="investorPrincipalSub" class="kpi-sub">Principal invested</div>
+      </article>
+      <article class="kpi clickable" data-kpi="investor-accrued" tabindex="0" role="button" aria-label="Open investor profit details">
+        <div class="kpi-top"><div><div class="kpi-label">Profit Till Today</div><div id="investorAccrued" class="kpi-value">0</div></div><div class="kpi-icon tone-b">P</div></div>
+        <div id="investorAccruedSub" class="kpi-sub">Day-wise accrued profit</div>
+      </article>
+      <article class="kpi clickable" data-kpi="investor-wallet" tabindex="0" role="button" aria-label="Open investor wallet value details">
+        <div class="kpi-top"><div><div class="kpi-label">Wallet Value</div><div id="investorWallet" class="kpi-value">0</div></div><div class="kpi-icon tone-c">W</div></div>
+        <div id="investorWalletSub" class="kpi-sub">Investment plus accrued profit</div>
+      </article>
+      <article class="kpi clickable" data-kpi="investor-withdrawable" tabindex="0" role="button" aria-label="Open investor withdrawal details">
+        <div class="kpi-top"><div><div class="kpi-label">Withdrawal Amount</div><div id="investorWithdrawable" class="kpi-value">0</div></div><div class="kpi-icon tone-d">M</div></div>
+        <div id="investorWithdrawableSub" class="kpi-sub">Available after maturity</div>
+      </article>
+    </section>
+
+    <section>
+      <article class="table-card">
+        <div class="table-head"><div><h3>Investor Wallet Ledger</h3><div class="subtle">Daily lots with principal, daily profit, accrued profit, and maturity value</div></div></div>
+        <div id="investorTable" class="table-wrap"><div class="empty">Enter an investor mobile number to see wallet details.</div></div>
+      </article>
+    </section>
+  </section>
+
+  <section id="employeeView" class="hidden stack">
+    <section class="content-grid">
+      <article class="table-card">
+        <div class="table-head"><div><h3>Assumption Preview</h3><div class="subtle">Editable values from the sheet</div></div></div>
+        <div id="employeeAssumptionPreview" class="table-wrap"><div class="empty">Load assumptions to preview.</div></div>
+      </article>
+      <article class="table-card">
+        <div class="table-head"><div><h3>Derived Values Preview</h3><div class="subtle">Calculated from assumptions</div></div></div>
+        <div id="employeeDerivedPreview" class="table-wrap"><div class="empty">Derived values will appear here.</div></div>
+      </article>
+    </section>
+    <section class="content-grid">
+      <article class="table-card">
+        <div class="table-head"><div><h3>Requirement Register</h3><div class="subtle">Requirement snapshots generated from assumptions and daily schedule logic</div></div></div>
+        <div id="employeeRequirementPreview" class="table-wrap"><div class="empty">Create a requirement to see it here.</div></div>
+      </article>
+      <article class="table-card">
+        <div class="table-head"><div><h3>Requirement Investments</h3><div class="subtle">Investor commitments linked to a selected requirement</div></div></div>
+        <div id="employeeRequirementInvestmentPreview" class="table-wrap"><div class="empty">Add investments against a requirement to see them here.</div></div>
+      </article>
+    </section>
+  </section>
+</div>
+</div>
+
+<div id="loaderBackdrop" class="loader-backdrop">
+  <div class="loader-card">
+    <div class="loader-mark"><span>p</span></div>
+    <div class="loader-title" id="loaderTitle">Loading dashboard</div>
+    <div class="loader-copy" id="loaderCopy">Please wait while profes syncs the latest live data.</div>
+  </div>
+</div>
+
+<div id="assumptionBackdrop" class="modal-backdrop"></div>
+<div id="assumptionModal" class="modal">
+  <div class="modal-head">
+    <div>
+      <h3>Assumption Editor</h3>
+      <div class="subtle">Live values from the `Assumption` tab.</div>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div id="assumptionList" class="assumption-list"></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-secondary" id="closeAssumptionButton" type="button">Close</button>
+    <button class="btn btn-primary" id="saveAssumptionButton" type="button">Save Assumptions</button>
+  </div>
+</div>
+
+<div id="passwordBackdrop" class="modal-backdrop"></div>
+<div id="passwordModal" class="modal">
+  <div class="modal-head">
+    <div><h3>Change Password</h3><div class="subtle">Default password must be changed before continuing.</div></div>
+  </div>
+  <div class="modal-body">
+    <div class="field"><label for="changeCurrentPassword">Current Password</label><input id="changeCurrentPassword" type="password"></div>
+    <div class="field"><label for="changeNewPassword">New Password</label><input id="changeNewPassword" type="password"></div>
+    <div class="field"><label for="changeConfirmPassword">Confirm Password</label><input id="changeConfirmPassword" type="password"></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-primary" id="savePasswordButton" type="button">Save Password</button>
+  </div>
+</div>
+
+<div id="investmentBackdrop" class="modal-backdrop"></div>
+<div id="investmentModal" class="modal">
+  <div class="modal-head">
+    <div><h3>Investment Entry</h3><div class="subtle">Create a new investor commitment against a requirement.</div></div>
+  </div>
+  <div class="modal-body">
+    <div class="field"><label for="investmentRequirementInput">Requirement</label><select id="investmentRequirementInput"></select></div>
+    <div class="field"><label for="investmentDateInput">Investment Date</label><input id="investmentDateInput" type="date"></div>
+    <div class="field"><label for="investmentNameInput">Investor Name</label><input id="investmentNameInput" type="text"></div>
+    <div class="field"><label for="investmentMobileInput">Investor Mobile</label><input id="investmentMobileInput" type="text" maxlength="15"></div>
+    <div class="field"><label for="investmentAmountInput">Investment Amount</label><input id="investmentAmountInput" type="number" step="0.01"></div>
+    <div class="field"><label for="investmentNotesInput">Notes</label><input id="investmentNotesInput" type="text"></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-secondary" id="closeInvestmentButton" type="button">Close</button>
+    <button class="btn btn-primary" id="saveInvestmentButton" type="button">Save Investment</button>
+  </div>
+</div>
+
+<div id="requirementBackdrop" class="modal-backdrop"></div>
+<div id="requirementModal" class="modal">
+  <div class="modal-head">
+    <div><h3>Create Requirement</h3><div class="subtle">Save the current assumptions and derived values as a funding requirement.</div></div>
+  </div>
+  <div class="modal-body">
+    <div class="field"><label for="requirementDateInput">Requirement Date</label><input id="requirementDateInput" type="date"></div>
+    <div class="field"><label for="requirementNameInput">Requirement Name</label><input id="requirementNameInput" type="text" placeholder="Apr 2026 Diesel Requirement"></div>
+    <div class="field"><label for="requirementNotesInput">Notes</label><input id="requirementNotesInput" type="text" placeholder="Optional notes"></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-secondary" id="closeRequirementButton" type="button">Close</button>
+    <button class="btn btn-primary" id="saveRequirementButton" type="button">Save Requirement</button>
+  </div>
+</div>
+
+<div id="employeeCreateBackdrop" class="modal-backdrop"></div>
+<div id="employeeCreateModal" class="modal">
+  <div class="modal-head">
+    <div><h3>Create Employee</h3><div class="subtle">Admin-only employee creation with default password.</div></div>
+  </div>
+  <div class="modal-body">
+    <div class="field"><label for="employeeCreateName">Employee Name</label><input id="employeeCreateName" type="text"></div>
+    <div class="field"><label for="employeeCreateUsername">Username</label><input id="employeeCreateUsername" type="text"></div>
+    <div class="field"><label for="employeeCreateMobile">Mobile</label><input id="employeeCreateMobile" type="text" maxlength="15"></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-secondary" id="closeCreateEmployeeButton" type="button">Close</button>
+    <button class="btn btn-primary" id="saveCreateEmployeeButton" type="button">Create Employee</button>
+  </div>
+</div>
+
+<div id="investorCreateBackdrop" class="modal-backdrop"></div>
+<div id="investorCreateModal" class="modal">
+  <div class="modal-head">
+    <div><h3>Create Investor</h3><div class="subtle">Admin-only investor creation with default password.</div></div>
+  </div>
+  <div class="modal-body">
+    <div class="field"><label for="investorCreateName">Investor Name</label><input id="investorCreateName" type="text"></div>
+    <div class="field"><label for="investorCreateMobile">Mobile</label><input id="investorCreateMobile" type="text" maxlength="15"></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-secondary" id="closeCreateInvestorButton" type="button">Close</button>
+    <button class="btn btn-primary" id="saveCreateInvestorButton" type="button">Create Investor</button>
+  </div>
+</div>
+
+<div id="requirementDetailBackdrop" class="modal-backdrop"></div>
+<div id="requirementDetailModal" class="modal">
+  <div class="modal-head">
+    <div><h3 id="requirementDetailTitle">Requirement Details</h3><div class="subtle" id="requirementDetailSubtitle">Requirement list</div></div>
+  </div>
+  <div class="modal-body">
+    <div id="requirementDetailContent" class="table-wrap"><div class="empty">No requirements available.</div></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-secondary" id="closeRequirementDetailButton" type="button">Close</button>
+  </div>
+</div>
+
+<script>
+const URL_PARAMS = new URLSearchParams(window.location.search);
+const URL_ROLE = (URL_PARAMS.get('role') || URL_PARAMS.get('view') || 'admin').toLowerCase();
+const WEB_APP_URL = (window.PROFES_WEB_APP_URL || '').trim();
+const SERVICE_WORKER_URL = './sw.js';
+const DEFAULT_VIEW = URL_ROLE === 'investor' || URL_ROLE === 'employee' ? URL_ROLE : 'admin';
+const ROLE_LOCKED = Boolean(URL_PARAMS.get('role') || URL_PARAMS.get('view'));
+const INITIAL_MOBILE = (URL_PARAMS.get('mobile') || '').replace(/\D/g, '');
+const ENTRY_ROLE = DEFAULT_VIEW === 'investor' || DEFAULT_VIEW === 'employee' ? DEFAULT_VIEW : 'admin';
+const state = {
+  admin:null,
+  investor:null,
+  assumptions:[],
+  derivedValues:[],
+  requirements:[],
+  requirementInvestments:[],
+  authUser:null,
+  mode:'admin',
+  mobile:'',
+  role:''
+};
+let deferredInstallPrompt = null;
+
+const els = {
+  authShell: document.getElementById('authShell'),
+  appShell: document.getElementById('appShell'),
+  authStatusText: document.getElementById('authStatusText'),
+  installAppButton: document.getElementById('installAppButton'),
+  heroEyebrow: document.getElementById('heroEyebrow'),
+  heroTitle: document.getElementById('heroTitle'),
+  heroCopy: document.getElementById('heroCopy'),
+  roleSwitcher: document.getElementById('roleSwitcher'),
+  roleAdminButton: document.getElementById('roleAdminButton'),
+  roleInvestorButton: document.getElementById('roleInvestorButton'),
+  roleEmployeeButton: document.getElementById('roleEmployeeButton'),
+  authAdminPanel: document.getElementById('authAdminPanel'),
+  authInvestorPanel: document.getElementById('authInvestorPanel'),
+  authEmployeePanel: document.getElementById('authEmployeePanel'),
+  authAdminUsername: document.getElementById('authAdminUsername'),
+  authAdminPassword: document.getElementById('authAdminPassword'),
+  authInvestorMobile: document.getElementById('authInvestorMobile'),
+  authInvestorPassword: document.getElementById('authInvestorPassword'),
+  authEmployeeUsername: document.getElementById('authEmployeeUsername'),
+  authEmployeePassword: document.getElementById('authEmployeePassword'),
+  enterAdminButton: document.getElementById('enterAdminButton'),
+  enterInvestorButton: document.getElementById('enterInvestorButton'),
+  enterEmployeeButton: document.getElementById('enterEmployeeButton'),
+  statusText: document.getElementById('statusText'),
+  adminView: document.getElementById('adminView'),
+  investorView: document.getElementById('investorView'),
+  employeeView: document.getElementById('employeeView'),
+  adminIntro: document.getElementById('adminIntro'),
+  adminIntroTitle: document.getElementById('adminIntroTitle'),
+  adminIntroCopy: document.getElementById('adminIntroCopy'),
+  openCreateInvestorButton: document.getElementById('openCreateInvestorButton'),
+  openCreateEmployeeButton: document.getElementById('openCreateEmployeeButton'),
+  logoutButton: document.getElementById('logoutButton'),
+  investorLogin: document.getElementById('investorLogin'),
+  investorIntroTitle: document.getElementById('investorIntroTitle'),
+  investorIntroCopy: document.getElementById('investorIntroCopy'),
+  employeePanel: document.getElementById('employeePanel'),
+  employeeIntroTitle: document.getElementById('employeeIntroTitle'),
+  employeeIntroCopy: document.getElementById('employeeIntroCopy'),
+  mobileInput: document.getElementById('mobileInput'),
+  loaderBackdrop: document.getElementById('loaderBackdrop'),
+  loaderTitle: document.getElementById('loaderTitle'),
+  loaderCopy: document.getElementById('loaderCopy'),
+  walletLoginButton: document.getElementById('walletLoginButton'),
+  walletRefreshButton: document.getElementById('walletRefreshButton'),
+  openAssumptionsButton: document.getElementById('openAssumptionsButton'),
+  openRequirementButton: document.getElementById('openRequirementButton'),
+  refreshAssumptionsButton: document.getElementById('refreshAssumptionsButton'),
+  openInvestmentButton: document.getElementById('openInvestmentButton'),
+  downloadPreviewButton: document.getElementById('downloadPreviewButton'),
+  employeeAssumptionPreview: document.getElementById('employeeAssumptionPreview'),
+  employeeDerivedPreview: document.getElementById('employeeDerivedPreview'),
+  employeeRequirementPreview: document.getElementById('employeeRequirementPreview'),
+  employeeRequirementInvestmentPreview: document.getElementById('employeeRequirementInvestmentPreview'),
+  assumptionBackdrop: document.getElementById('assumptionBackdrop'),
+  assumptionModal: document.getElementById('assumptionModal'),
+  assumptionList: document.getElementById('assumptionList'),
+  closeAssumptionButton: document.getElementById('closeAssumptionButton'),
+  saveAssumptionButton: document.getElementById('saveAssumptionButton'),
+  passwordBackdrop: document.getElementById('passwordBackdrop'),
+  passwordModal: document.getElementById('passwordModal'),
+  changeCurrentPassword: document.getElementById('changeCurrentPassword'),
+  changeNewPassword: document.getElementById('changeNewPassword'),
+  changeConfirmPassword: document.getElementById('changeConfirmPassword'),
+  savePasswordButton: document.getElementById('savePasswordButton'),
+  investmentBackdrop: document.getElementById('investmentBackdrop'),
+  investmentModal: document.getElementById('investmentModal'),
+  investmentRequirementInput: document.getElementById('investmentRequirementInput'),
+  investmentDateInput: document.getElementById('investmentDateInput'),
+  investmentNameInput: document.getElementById('investmentNameInput'),
+  investmentMobileInput: document.getElementById('investmentMobileInput'),
+  investmentAmountInput: document.getElementById('investmentAmountInput'),
+  investmentNotesInput: document.getElementById('investmentNotesInput'),
+  closeInvestmentButton: document.getElementById('closeInvestmentButton'),
+  saveInvestmentButton: document.getElementById('saveInvestmentButton'),
+  employeeCreateBackdrop: document.getElementById('employeeCreateBackdrop'),
+  employeeCreateModal: document.getElementById('employeeCreateModal'),
+  employeeCreateName: document.getElementById('employeeCreateName'),
+  employeeCreateUsername: document.getElementById('employeeCreateUsername'),
+  employeeCreateMobile: document.getElementById('employeeCreateMobile'),
+  investorCreateBackdrop: document.getElementById('investorCreateBackdrop'),
+  investorCreateModal: document.getElementById('investorCreateModal'),
+  investorCreateName: document.getElementById('investorCreateName'),
+  investorCreateMobile: document.getElementById('investorCreateMobile'),
+  closeCreateInvestorButton: document.getElementById('closeCreateInvestorButton'),
+  saveCreateInvestorButton: document.getElementById('saveCreateInvestorButton'),
+  requirementBackdrop: document.getElementById('requirementBackdrop'),
+  requirementModal: document.getElementById('requirementModal'),
+  requirementDateInput: document.getElementById('requirementDateInput'),
+  requirementNameInput: document.getElementById('requirementNameInput'),
+  requirementNotesInput: document.getElementById('requirementNotesInput'),
+  closeRequirementButton: document.getElementById('closeRequirementButton'),
+  saveRequirementButton: document.getElementById('saveRequirementButton'),
+  requirementDetailBackdrop: document.getElementById('requirementDetailBackdrop'),
+  requirementDetailModal: document.getElementById('requirementDetailModal'),
+  requirementDetailTitle: document.getElementById('requirementDetailTitle'),
+  requirementDetailSubtitle: document.getElementById('requirementDetailSubtitle'),
+  requirementDetailContent: document.getElementById('requirementDetailContent'),
+  closeRequirementDetailButton: document.getElementById('closeRequirementDetailButton'),
+  closeCreateEmployeeButton: document.getElementById('closeCreateEmployeeButton'),
+  saveCreateEmployeeButton: document.getElementById('saveCreateEmployeeButton')
+};
+
+function getRoleMeta(role){
+  if(role === 'investor'){
+    return {
+      title:'profes Investor Wallet',
+      eyebrow:'profes Investor Wallet',
+      heroTitle:'Live wallet value, profit accrual, and maturity tracking.',
+      heroCopy:'Open your investor wallet directly, review lot-wise growth, and track what becomes withdrawable as each investment matures.',
+      authTitle:'Investor wallet access',
+      authCopy:'Open your wallet with your registered mobile number and review live profit, value, and withdrawal status.',
+      loaderTitle:'Opening investor wallet',
+      loaderCopy:'Please wait while profes syncs your latest wallet data.'
+    };
+  }
+  if(role === 'employee'){
+    return {
+      title:'profes Employee Panel',
+      eyebrow:'profes Employee Operations',
+      heroTitle:'Assumptions, derived values, requirements, and funding in one place.',
+      heroCopy:'Create and maintain funding requirements from assumptions, capture investor commitments, and keep the operating sheet flow up to date.',
+      authTitle:'Employee assumptions panel',
+      authCopy:'Create requirement snapshots from assumptions and then add investor funding against each requirement.',
+      loaderTitle:'Opening employee panel',
+      loaderCopy:'Please wait while profes loads assumptions, derived values, and requirement data.'
+    };
+  }
+  return {
+    title:'profes Admin Dashboard',
+    eyebrow:'profes Admin Dashboard',
+    heroTitle:'Daily investment growth, profit accrual, and maturity tracking.',
+    heroCopy:'Open the admin dashboard to review requirement funding, investor balances, wallet growth, and maturity exposure from the live sheet.',
+    authTitle:'Admin command dashboard',
+    authCopy:'See total investment exposure, live accrued profit, maturity pipeline, and investor wallet ranking.',
+    loaderTitle:'Opening admin dashboard',
+    loaderCopy:'Please wait while profes syncs the latest admin dashboard data.'
+  };
+}
+
+function applyRoleMeta(role){
+  const meta = getRoleMeta(role);
+  document.title = meta.title;
+  els.heroEyebrow.textContent = meta.eyebrow;
+  els.heroTitle.textContent = meta.heroTitle;
+  els.heroCopy.textContent = meta.heroCopy;
+  if(role === 'admin'){
+    els.adminIntroTitle.textContent = meta.authTitle;
+    els.adminIntroCopy.textContent = meta.authCopy;
+  } else if(role === 'investor'){
+    els.investorIntroTitle.textContent = meta.authTitle;
+    els.investorIntroCopy.textContent = meta.authCopy;
+  } else {
+    els.employeeIntroTitle.textContent = meta.authTitle;
+    els.employeeIntroCopy.textContent = meta.authCopy;
+  }
+}
+
+function showLoader(title, copy){
+  const meta = getRoleMeta(state.role || ENTRY_ROLE);
+  els.loaderTitle.textContent = title || meta.loaderTitle;
+  els.loaderCopy.textContent = copy || meta.loaderCopy;
+  els.loaderBackdrop.classList.add('open');
+}
+
+function hideLoader(){
+  els.loaderBackdrop.classList.remove('open');
+}
+
+async function registerPwa(){
+  if(!('serviceWorker' in navigator)) return;
+  try{
+    await navigator.serviceWorker.register(SERVICE_WORKER_URL);
+  } catch (error) {}
+}
+
+function setupInstallPrompt(){
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    deferredInstallPrompt = event;
+    els.installAppButton.classList.remove('hidden');
+  });
+  window.addEventListener('appinstalled', () => {
+    deferredInstallPrompt = null;
+    els.installAppButton.classList.add('hidden');
+    setStatus('profes app installed successfully.');
+  });
+}
+
+function formatCurrency(value){
+  return new Intl.NumberFormat('en-IN', {
+    style:'currency',
+    currency:'INR',
+    maximumFractionDigits:0
+  }).format(Number(value || 0));
+}
+
+function formatNumber(value){
+  return new Intl.NumberFormat('en-IN', { maximumFractionDigits:2 }).format(Number(value || 0));
+}
+
+function escapeHtml(value){
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function formatDetailValue(value, type){
+  if(type === 'currency') return formatCurrency(value);
+  if(type === 'number') return formatNumber(value);
+  return escapeHtml(value);
+}
+
+function buildDetailStats(stats){
+  if(!stats || !stats.length) return '';
+  return `
+    <div class="detail-grid">
+      ${stats.map((item) => `
+        <div class="detail-stat">
+          <span>${escapeHtml(item.label)}</span>
+          <strong>${formatDetailValue(item.value, item.type)}</strong>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function buildDetailTable(columns, rows){
+  if(!columns || !columns.length || !rows || !rows.length) return '';
+  return `
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>${columns.map((column) => `<th>${escapeHtml(column.label)}</th>`).join('')}</tr>
+        </thead>
+        <tbody>
+          ${rows.map((row) => `
+            <tr>${columns.map((column) => `<td>${formatDetailValue(row[column.key], column.type)}</td>`).join('')}</tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function openDetailModal(config){
+  if(!config) return;
+  els.requirementDetailTitle.textContent = config.title || 'Details';
+  els.requirementDetailSubtitle.textContent = config.subtitle || '';
+  const sections = [];
+  if(config.copy){
+    sections.push(`<div class="detail-copy">${escapeHtml(config.copy)}</div>`);
+  }
+  if(config.stats && config.stats.length){
+    sections.push(buildDetailStats(config.stats));
+  }
+  if(config.columns && config.rows && config.rows.length){
+    sections.push(buildDetailTable(config.columns, config.rows));
+  }
+  if(!sections.length){
+    sections.push(`<div class="empty">${escapeHtml(config.emptyMessage || 'No details available.')}</div>`);
+  }
+  els.requirementDetailContent.innerHTML = sections.join('');
+  els.requirementDetailBackdrop.classList.add('open');
+  els.requirementDetailModal.classList.add('open');
+}
+
+function parseNumericValue(value){
+  const text = String(value || '').replace(/,/g, '').replace(/[^\d.-]/g, '').trim();
+  const parsed = Number(text);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function normalizeAssumptionKey(value){
+  return String(value || '')
+    .replace(/\n/g, ' ')
+    .replace(/[()â‚¹/.-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
+
+function buildDerivedValuesFromAssumptions(items){
+  const map = {};
+  (items || []).forEach((item) => {
+    map[normalizeAssumptionKey(item.parameter)] = item.value;
+  });
+
+  const month = parseNumericValue(map.month_1_jan_12_dec);
+  const year = parseNumericValue(map.year);
+  const dailyConsumption = parseNumericValue(map.daily_consumption_litres);
+  const dieselRate = parseNumericValue(map.diesel_rate_litre);
+  const capital = parseNumericValue(map.investor_capital);
+  const paymentReceiptDay = parseNumericValue(map.payment_receipt_date_day_of_next_month);
+  const daysInMonth = month && year ? new Date(year, month, 0).getDate() : 0;
+  const dailyDieselCost = dailyConsumption * dieselRate;
+  const totalMonthOutflow = dailyDieselCost * daysInMonth;
+  const capitalTurns = capital ? totalMonthOutflow / capital : 0;
+  const avgDaysOutstanding = daysInMonth ? Math.round(((daysInMonth + 1) / 2) + paymentReceiptDay) : 0;
+
+  return [
+    { parameter:'Days in Month', value:daysInMonth ? String(daysInMonth) : '', notes:'Calculated from month/year' },
+    { parameter:'Effective Diesel Buy Rate (â‚¹/L)', value:dieselRate ? formatCurrency(dieselRate) : '', notes:'Same as diesel rate' },
+    { parameter:'Daily Diesel Cost (â‚¹)', value:dailyDieselCost ? formatCurrency(dailyDieselCost) : '', notes:'Consumption Ã— diesel rate' },
+    { parameter:'Daily Turnover (litres)', value:dailyConsumption ? formatNumber(dailyConsumption) : '', notes:'Same as daily consumption' },
+    { parameter:'Capital Turns per Month', value:capitalTurns ? `${capitalTurns.toFixed(2)}x` : '', notes:'Monthly outflow / investor capital' },
+    { parameter:'Days Outstanding (avg)', value:avgDaysOutstanding ? String(avgDaysOutstanding) : '', notes:'Average day in month + next month receipt day' }
+  ];
+}
+
+function getRequirementDefaultDate(){
+  const map = {};
+  (state.assumptions || []).forEach((item) => {
+    map[normalizeAssumptionKey(item.parameter)] = item.value;
+  });
+  const month = parseNumericValue(map.month_1_jan_12_dec);
+  const year = parseNumericValue(map.year);
+  const today = new Date();
+  if(month && year){
+    if(today.getFullYear() === year && (today.getMonth() + 1) === month){
+      return today.toISOString().slice(0, 10);
+    }
+    return new Date(year, month - 1, 1).toISOString().slice(0, 10);
+  }
+  return today.toISOString().slice(0, 10);
+}
+
+function syncAssumptionStateFromInputs(){
+  state.assumptions = state.assumptions.map((item, index) => {
+    const valueInput = document.querySelector(`[data-assumption-value="${index}"]`);
+    return {
+      ...item,
+      value: valueInput ? valueInput.value : item.value
+    };
+  });
+  state.derivedValues = buildDerivedValuesFromAssumptions(state.assumptions.filter((item) => item.editable !== false));
+}
+
+function bindAssumptionInputs(){
+  document.querySelectorAll('[data-assumption-value]').forEach((input) => {
+    if (input.disabled) return;
+    input.addEventListener('input', () => {
+      syncAssumptionStateFromInputs();
+      renderDerivedEditorSection();
+      renderPreviewTable(els.employeeAssumptionPreview, state.assumptions);
+      renderPreviewTable(els.employeeDerivedPreview, state.derivedValues || []);
+    });
+  });
+}
+
+function setStatus(message){
+  els.statusText.textContent = message;
+}
+
+function saveSession(){
+  try {
+    if(!state.authUser) return;
+    sessionStorage.setItem('investorWalletSession', JSON.stringify({
+      authUser: state.authUser,
+      mode: state.mode,
+      mobile: state.mobile || els.mobileInput.value || els.authInvestorMobile.value || ''
+    }));
+  } catch (error) {}
+}
+
+function clearSession(){
+  try {
+    sessionStorage.removeItem('investorWalletSession');
+  } catch (error) {}
+}
+
+async function restoreSession(){
+  try {
+    showLoader('Restoring your session', 'Please wait while profes verifies your saved login and reloads the right dashboard.');
+    const raw = sessionStorage.getItem('investorWalletSession');
+    if(!raw) return false;
+    const saved = JSON.parse(raw);
+    if(!saved || !saved.authUser || !saved.authUser.role || !saved.authUser.username || !saved.authUser.password){
+      return false;
+    }
+    if(ROLE_LOCKED && String(saved.authUser.role || '').toUpperCase() !== ENTRY_ROLE.toUpperCase()){
+      clearSession();
+      return false;
+    }
+    const result = await login(saved.authUser.role, saved.authUser.username, saved.authUser.password);
+    if(!result.success){
+      clearSession();
+      return false;
+    }
+    state.authUser = saved.authUser;
+    state.mobile = saved.mobile || '';
+    if(state.authUser.role === 'INVESTOR'){
+      els.authInvestorMobile.value = state.mobile || state.authUser.username || '';
+      els.mobileInput.value = state.mobile || state.authUser.username || '';
+      enterApp('investor');
+      await loadInvestor(state.mobile || state.authUser.username);
+    } else if(state.authUser.role === 'EMPLOYEE'){
+      enterApp('employee');
+      await loadAssumptions();
+    } else {
+      enterApp('admin');
+      await loadAdmin();
+    }
+    saveSession();
+    return true;
+  } catch (error) {
+    clearSession();
+    return false;
+  } finally {
+    hideLoader();
+  }
+}
+
+async function fetchJson(url){
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    const actionMatch = /[?&]action=([^&]+)/.exec(url);
+    const mobileMatch = /[?&]mobile=([^&]+)/.exec(url);
+    const action = actionMatch ? decodeURIComponent(actionMatch[1]) : '';
+    const payload = {
+      mobile: mobileMatch ? decodeURIComponent(mobileMatch[1]) : ''
+    };
+    return new Promise((resolve, reject) => {
+      google.script.run
+        .withSuccessHandler(resolve)
+        .withFailureHandler((error) => reject(new Error(error && error.message ? error.message : 'Request failed')))
+        .investorWalletApi(action, payload);
+    });
+  }
+  if (!WEB_APP_URL || WEB_APP_URL.indexOf('PASTE_') === 0) {
+    throw new Error('Add your Google Apps Script Web App URL in config.js first.');
+  }
+  const response = await fetch(url, { method:'GET' });
+  if(!response.ok) throw new Error('Request failed');
+  return response.json();
+}
+
+async function postJson(payload){
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    return new Promise((resolve, reject) => {
+      google.script.run
+        .withSuccessHandler(resolve)
+        .withFailureHandler((error) => reject(new Error(error && error.message ? error.message : 'Request failed')))
+        .investorWalletApi(payload.action || '', payload || {});
+    });
+  }
+  if (!WEB_APP_URL || WEB_APP_URL.indexOf('PASTE_') === 0) {
+    throw new Error('Add your Google Apps Script Web App URL in config.js first.');
+  }
+  const response = await fetch(WEB_APP_URL, {
+    method:'POST',
+    headers:{ 'Content-Type':'text/plain;charset=utf-8' },
+    body:JSON.stringify(payload)
+  });
+  if(!response.ok) throw new Error('Request failed');
+  return response.json();
+}
+
+async function login(role, username, password){
+  return postJson({ action:'LOGIN', role, username, password });
+}
+
+async function changePassword(role, username, currentPassword, newPassword){
+  return postJson({ action:'CHANGE_PASSWORD', role, username, currentPassword, newPassword });
+}
+
+async function createEmployee(payload){
+  return postJson({ action:'CREATE_EMPLOYEE', ...payload });
+}
+
+async function createInvestor(payload){
+  return postJson({ action:'CREATE_INVESTOR', ...payload });
+}
+
+async function loadAdmin(){
+  showLoader('Refreshing admin dashboard', 'Please wait while profes pulls the latest admin totals, requirements, and investor balances.');
+  try{
+    setStatus('Refreshing admin dashboard from Google Sheet...');
+    const data = await fetchJson(`${WEB_APP_URL}?action=BOOTSTRAP&_=${Date.now()}`);
+    if(!data.success) throw new Error(data.message || 'Unable to load admin dashboard.');
+    state.admin = data;
+    state.assumptions = data.assumptions || [];
+    renderAdmin(data);
+    setStatus(`Admin dashboard updated from sheet at ${data.summary.lastUpdated}.`);
+  } finally {
+    hideLoader();
+  }
+}
+
+async function loadInvestor(mobile){
+  const cleanMobile = String(mobile || '').replace(/\D/g, '').slice(-10);
+  if(cleanMobile.length !== 10){
+    setStatus('Please enter a valid 10-digit investor mobile number.');
+    return;
+  }
+  showLoader('Opening investor wallet', 'Please wait while profes loads the latest investment lots, profit, and withdrawal values.');
+  try{
+    setStatus('Opening investor wallet...');
+    const data = await fetchJson(`${WEB_APP_URL}?action=INVESTOR&mobile=${encodeURIComponent(cleanMobile)}&_=${Date.now()}`);
+    if(!data.success) throw new Error(data.message || 'Unable to load wallet.');
+    state.investor = data;
+    state.mobile = cleanMobile;
+    renderInvestor(data);
+    setStatus(`Investor wallet updated at ${data.investor.lastUpdated}.`);
+  } finally {
+    hideLoader();
+  }
+}
+
+async function loadAssumptions(){
+  showLoader('Loading assumptions', 'Please wait while profes refreshes assumptions, derived values, and requirement data.');
+  try{
+    setStatus('Refreshing assumptions from Google Sheet...');
+    const data = await fetchJson(`${WEB_APP_URL}?action=EMPLOYEE_DATA&_=${Date.now()}`);
+    if(!data.success) throw new Error(data.message || 'Unable to load assumptions.');
+    state.assumptions = data.assumptions || [];
+    state.derivedValues = data.derivedValues || [];
+    state.requirements = data.requirements || [];
+    state.requirementInvestments = data.requirementInvestments || [];
+    renderAssumptions();
+    setStatus(`Assumptions loaded at ${data.lastUpdated}.`);
+  } finally {
+    hideLoader();
+  }
+}
+
+function renderRankList(items){
+  const container = document.getElementById('adminRankList');
+  if(!items.length){
+    container.innerHTML = '<div class="empty">No investor data available.</div>';
+    return;
+  }
+  container.innerHTML = items.slice(0, 8).map((item, index) => `
+    <div class="rank-item">
+      <div class="rank-badge">${index + 1}</div>
+      <div class="rank-name">${item.investorName} <span class="subtle">(${item.mobileMasked})</span></div>
+      <div class="rank-value">${formatCurrency(item.walletValue)}</div>
+    </div>
+  `).join('');
+}
+
+function renderAdminTable(investors){
+  const container = document.getElementById('adminTable');
+  if(!investors.length){
+    container.innerHTML = '<div class="empty">No investor summary found.</div>';
+    return;
+  }
+
+  const rows = investors.map((item) => `
+    <tr>
+      <td>${item.investorName}</td>
+      <td>${item.mobileMasked}</td>
+      <td>${item.investmentCount}</td>
+      <td>${formatCurrency(item.totalPrincipal)}</td>
+      <td>${formatCurrency(item.accruedProfit)}</td>
+      <td>${formatCurrency(item.walletValue)}</td>
+      <td>${formatCurrency(item.withdrawableAmount)}</td>
+      <td>${item.activeInvestments}</td>
+      <td>${item.maturedInvestments}</td>
+      <td>${item.nextMaturityDate || '-'}</td>
+    </tr>
+  `).join('');
+
+  container.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Investor</th>
+          <th>Mobile</th>
+          <th>Lots</th>
+          <th>Total Investment</th>
+          <th>Accrued Profit</th>
+          <th>Wallet Value</th>
+          <th>Withdrawable</th>
+          <th>Active</th>
+          <th>Matured</th>
+          <th>Next Maturity</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+function renderAdmin(data){
+  const summary = data.summary;
+  document.getElementById('adminPrincipal').textContent = formatCurrency(summary.totalPrincipal);
+  document.getElementById('adminAccrued').textContent = formatCurrency(summary.totalAccruedProfit);
+  document.getElementById('adminWallet').textContent = formatCurrency(summary.totalWalletValue);
+  document.getElementById('adminWithdrawable').textContent = formatCurrency(summary.totalWithdrawable);
+  document.getElementById('adminTodayRequirement').textContent = formatCurrency(summary.todayRequirementAmount);
+  document.getElementById('adminTodayFunded').textContent = formatCurrency(summary.todayFundedAmount);
+  document.getElementById('adminTodayBalance').textContent = formatCurrency(summary.todayBalanceAmount);
+  document.getElementById('adminTodayInvestors').textContent = formatNumber(summary.todayInvestorCount);
+  document.getElementById('adminTodayWithdrawal').textContent = formatCurrency(summary.todayWithdrawalAmount);
+  document.getElementById('adminSnapshotText').textContent = `${summary.totalRequirements} requirements with ${summary.totalInvestors} active investors.`;
+  renderAdminRequirementSummary(data.requirements || [], summary);
+
+  renderRankList(data.investors);
+  renderAdminTable(data.investors);
+  bindKpiCards();
+}
+
+function renderAdminRequirementSummary(requirements, summary){
+  const container = document.getElementById('adminRequirementSummary');
+  const rows = [
+    { key:'all', label:'Total Requirements', value:formatNumber(summary.totalRequirements) },
+    { key:'open', label:'Open Requirements', value:formatNumber(summary.openRequirements) },
+    { key:'partial', label:'Partial Requirements', value:formatNumber(summary.partialRequirements) },
+    { key:'completed', label:'Completed Requirements', value:formatNumber(summary.completedRequirements) },
+    { key:'investors', label:'Total Investors', value:formatNumber(summary.totalInvestors) },
+    { key:'active', label:'Active Investments', value:formatNumber(summary.activeRecords) },
+    { key:'matured', label:'Matured Investments', value:formatNumber(summary.maturedRecords) },
+    { key:'profit', label:'Full Profit Potential', value:formatCurrency(summary.totalFullProfit) }
+  ];
+  container.innerHTML = `
+    <table>
+      <tbody>${rows.map((row) => `
+        <tr>
+          <td colspan="2">
+            <button type="button" data-requirement-summary="${row.key}">
+              <span class="summary-label">${row.label}</span>
+              <span class="summary-value">${row.value}</span>
+            </button>
+          </td>
+        </tr>
+      `).join('')}</tbody>
+    </table>
+  `;
+  container.querySelectorAll('[data-requirement-summary]').forEach((button) => {
+    button.addEventListener('click', () => openRequirementDetail(button.getAttribute('data-requirement-summary'), requirements, summary));
+  });
+}
+
+function openRequirementDetail(type, requirements, summary){
+  let title = 'Requirement Details';
+  let subtitle = '';
+  let items = requirements || [];
+
+  if(type === 'open'){
+    title = 'Open Requirements';
+    subtitle = `${summary.openRequirements} open requirements`;
+    items = items.filter((item) => item.status === 'OPEN');
+  } else if(type === 'partial'){
+    title = 'Partial Requirements';
+    subtitle = `${summary.partialRequirements} partially funded requirements`;
+    items = items.filter((item) => item.status === 'PARTIAL');
+  } else if(type === 'completed'){
+    title = 'Completed Requirements';
+    subtitle = `${summary.completedRequirements} completed requirements`;
+    items = items.filter((item) => item.status === 'COMPLETED');
+  } else {
+    title = 'All Requirements';
+    subtitle = `${summary.totalRequirements} total requirements`;
+  }
+  openDetailModal({
+    title,
+    subtitle,
+    stats:[
+      { label:'Requirements', value:items.length, type:'number' },
+      { label:'Total Required', value:items.reduce((sum, item) => sum + Number(item.totalOutflow || 0), 0), type:'currency' },
+      { label:'Funded', value:items.reduce((sum, item) => sum + Number(item.fundedAmount || 0), 0), type:'currency' },
+      { label:'Balance', value:items.reduce((sum, item) => sum + Number(item.remainingAmount || 0), 0), type:'currency' }
+    ],
+    columns:[
+      { key:'requirementId', label:'Requirement ID' },
+      { key:'requirementName', label:'Name' },
+      { key:'periodLabel', label:'Period' },
+      { key:'totalOutflow', label:'Requirement', type:'currency' },
+      { key:'fundedAmount', label:'Funded', type:'currency' },
+      { key:'remainingAmount', label:'Balance', type:'currency' },
+      { key:'totalGrossProfit', label:'Profit', type:'currency' },
+      { key:'status', label:'Status' }
+    ],
+    rows:items.length ? items : [],
+    emptyMessage:'No requirements available for this selection.'
+  });
+}
+
+function closeRequirementDetail(){
+  els.requirementDetailBackdrop.classList.remove('open');
+  els.requirementDetailModal.classList.remove('open');
+}
+
+function bindKpiCards(){
+  document.querySelectorAll('[data-kpi]').forEach((card) => {
+    if(card.dataset.kpiBound === 'yes') return;
+    const type = card.getAttribute('data-kpi');
+    const handler = () => openKpiDetail(type);
+    card.addEventListener('click', handler);
+    card.addEventListener('keydown', (event) => {
+      if(event.key === 'Enter' || event.key === ' '){
+        event.preventDefault();
+        handler();
+      }
+    });
+    card.dataset.kpiBound = 'yes';
+  });
+}
+
+function renderInvestorTable(records){
+  const container = document.getElementById('investorTable');
+  if(!records.length){
+    container.innerHTML = '<div class="empty">No wallet rows found for this investor.</div>';
+    return;
+  }
+
+  const rows = records.map((item) => `
+    <tr>
+      <td>${item.scheduleDay || '-'}</td>
+      <td>${item.date}</td>
+      <td>${item.maturityDate}</td>
+      <td>${item.tenureDays}</td>
+      <td>${formatCurrency(item.principal)}</td>
+      <td>${formatCurrency(item.dailyProfit)}</td>
+      <td>${formatCurrency(item.accruedProfit)}</td>
+      <td>${formatCurrency(item.walletValue)}</td>
+      <td>${formatCurrency(item.withdrawableAmount)}</td>
+      <td>${item.elapsedDays}</td>
+      <td>${item.remainingDays}</td>
+      <td>${item.status}</td>
+    </tr>
+  `).join('');
+
+  container.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Investment Date</th>
+          <th>Maturity Date</th>
+          <th>Tenure Days</th>
+          <th>Investment</th>
+          <th>Daily Profit</th>
+          <th>Profit Till Today</th>
+          <th>Wallet Value</th>
+          <th>Withdrawal Amount</th>
+          <th>Elapsed Days</th>
+          <th>Remaining Days</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+function renderInvestor(data){
+  const investor = data.investor;
+  document.getElementById('investorPrincipal').textContent = formatCurrency(investor.totalPrincipal);
+  document.getElementById('investorAccrued').textContent = formatCurrency(investor.totalAccruedProfit);
+  document.getElementById('investorWallet').textContent = formatCurrency(investor.walletValue);
+  document.getElementById('investorWithdrawable').textContent = formatCurrency(investor.totalWithdrawable);
+
+  renderInvestorTable(data.records);
+  bindKpiCards();
+}
+
+function getTodayRequirements(adminData){
+  if(!adminData || !adminData.summary) return [];
+  const asOfDate = adminData.summary.asOfDate;
+  return (adminData.requirements || []).filter((item) => item.startDate === asOfDate);
+}
+
+function getInvestorRowsByMetric(records, metricKey){
+  return (records || [])
+    .map((item) => ({ ...item, metricValue:Number(item[metricKey] || 0) }))
+    .filter((item) => item.metricValue > 0)
+    .sort((a, b) => b.metricValue - a.metricValue);
+}
+
+function buildAdminKpiDetail(type){
+  const adminData = state.admin;
+  if(!adminData || !adminData.summary) return null;
+  const { summary } = adminData;
+  const investors = adminData.investors || [];
+  const todayRequirements = getTodayRequirements(adminData);
+
+  const investorColumns = [
+    { key:'investorName', label:'Investor' },
+    { key:'mobileMasked', label:'Mobile' },
+    { key:'investmentCount', label:'Lots', type:'number' },
+    { key:'metricValue', label:'Amount', type:'currency' }
+  ];
+
+  if(type === 'admin-principal'){
+    return {
+      title:'Total Investment',
+      subtitle:`${summary.totalInvestors} investors across ${summary.activeRecords + summary.maturedRecords} investments`,
+      stats:[
+        { label:'Total Investment', value:summary.totalPrincipal, type:'currency' },
+        { label:'Active Investments', value:summary.activeRecords, type:'number' },
+        { label:'Matured Investments', value:summary.maturedRecords, type:'number' },
+        { label:'Investors', value:summary.totalInvestors, type:'number' }
+      ],
+      columns:investorColumns,
+      rows:investors.map((item) => ({ ...item, metricValue:item.totalPrincipal })).sort((a, b) => b.metricValue - a.metricValue)
+    };
+  }
+  if(type === 'admin-accrued'){
+    return {
+      title:'Accrued Profit',
+      subtitle:'Profit accumulated till the current as-of date',
+      stats:[
+        { label:'Accrued Profit', value:summary.totalAccruedProfit, type:'currency' },
+        { label:'Wallet Value', value:summary.totalWalletValue, type:'currency' },
+        { label:'Full Profit Potential', value:summary.totalFullProfit, type:'currency' }
+      ],
+      columns:investorColumns,
+      rows:investors.map((item) => ({ ...item, metricValue:item.accruedProfit })).filter((item) => item.metricValue > 0).sort((a, b) => b.metricValue - a.metricValue),
+      emptyMessage:'No accrued profit has built up yet.'
+    };
+  }
+  if(type === 'admin-wallet'){
+    return {
+      title:'Wallet Value',
+      subtitle:'Current principal plus accrued profit by investor',
+      stats:[
+        { label:'Wallet Value', value:summary.totalWalletValue, type:'currency' },
+        { label:'Total Investment', value:summary.totalPrincipal, type:'currency' },
+        { label:'Accrued Profit', value:summary.totalAccruedProfit, type:'currency' }
+      ],
+      columns:investorColumns,
+      rows:investors.map((item) => ({ ...item, metricValue:item.walletValue })).sort((a, b) => b.metricValue - a.metricValue)
+    };
+  }
+  if(type === 'admin-withdrawable'){
+    return {
+      title:'Withdrawable Amount',
+      subtitle:'Only matured balances are available for withdrawal',
+      stats:[
+        { label:'Withdrawable', value:summary.totalWithdrawable, type:'currency' },
+        { label:'Matured Investments', value:summary.maturedRecords, type:'number' },
+        { label:'Matured Requirements', value:summary.completedRequirements, type:'number' }
+      ],
+      columns:investorColumns,
+      rows:investors.map((item) => ({ ...item, metricValue:item.withdrawableAmount })).filter((item) => item.metricValue > 0).sort((a, b) => b.metricValue - a.metricValue),
+      emptyMessage:'No matured balance is available yet.'
+    };
+  }
+
+  const requirementColumns = [
+    { key:'requirementId', label:'Requirement ID' },
+    { key:'requirementName', label:'Requirement' },
+    { key:'startDate', label:'Date' },
+    { key:'totalOutflow', label:'Required', type:'currency' },
+    { key:'fundedAmount', label:'Funded', type:'currency' },
+    { key:'remainingAmount', label:'Balance', type:'currency' },
+    { key:'status', label:'Status' }
+  ];
+
+  if(type === 'admin-today-requirement'){
+    return {
+      title:`Today's Requirement`,
+      subtitle:`${summary.asOfDate} requirement snapshot`,
+      stats:[
+        { label:'Required Today', value:summary.todayRequirementAmount, type:'currency' },
+        { label:'Requirements', value:todayRequirements.length, type:'number' },
+        { label:'Profit Potential', value:summary.todayProfitPotential, type:'currency' }
+      ],
+      columns:requirementColumns,
+      rows:todayRequirements,
+      emptyMessage:'No requirement is scheduled for today.'
+    };
+  }
+  if(type === 'admin-today-funded'){
+    return {
+      title:`Today's Funded Amount`,
+      subtitle:`Funding linked to requirements dated ${summary.asOfDate}`,
+      stats:[
+        { label:'Funded Today', value:summary.todayFundedAmount, type:'currency' },
+        { label:'Required Today', value:summary.todayRequirementAmount, type:'currency' },
+        { label:'Investors Today', value:summary.todayInvestorCount, type:'number' }
+      ],
+      columns:requirementColumns,
+      rows:todayRequirements.filter((item) => Number(item.fundedAmount || 0) > 0),
+      emptyMessage:'No funding has been linked to today’s requirement yet.'
+    };
+  }
+  if(type === 'admin-today-balance'){
+    return {
+      title:`Today's Balance`,
+      subtitle:`Pending amount still needed for ${summary.asOfDate}`,
+      stats:[
+        { label:'Pending Today', value:summary.todayBalanceAmount, type:'currency' },
+        { label:'Required Today', value:summary.todayRequirementAmount, type:'currency' },
+        { label:'Funded Today', value:summary.todayFundedAmount, type:'currency' }
+      ],
+      columns:requirementColumns,
+      rows:todayRequirements.filter((item) => Number(item.remainingAmount || 0) > 0),
+      emptyMessage:'Today’s requirement is already fully funded.'
+    };
+  }
+  if(type === 'admin-today-investors'){
+    return {
+      title:`Today's Investors`,
+      subtitle:`Unique investors currently funding requirements dated ${summary.asOfDate}`,
+      stats:[
+        { label:'Investors Today', value:summary.todayInvestorCount, type:'number' },
+        { label:'Funded Today', value:summary.todayFundedAmount, type:'currency' },
+        { label:'Requirements Today', value:todayRequirements.length, type:'number' }
+      ],
+      copy:'This count comes from investments linked to today’s active requirements. The popup shows the funded requirements driving that investor activity.',
+      columns:requirementColumns,
+      rows:todayRequirements.filter((item) => Number(item.fundedAmount || 0) > 0),
+      emptyMessage:'No investors have funded today’s requirements yet.'
+    };
+  }
+  if(type === 'admin-today-withdrawal'){
+    const todayMaturityRows = (adminData.dailyMaturity || []).filter((item) => item.label === summary.asOfDate);
+    return {
+      title:`Today's Withdrawal`,
+      subtitle:`Amount becoming withdrawable on ${summary.asOfDate}`,
+      stats:[
+        { label:'Withdrawal Today', value:summary.todayWithdrawalAmount, type:'currency' },
+        { label:'Maturity Events', value:todayMaturityRows.length, type:'number' },
+        { label:'Total Withdrawable', value:summary.totalWithdrawable, type:'currency' }
+      ],
+      copy:summary.todayWithdrawalAmount > 0 ? 'This value is based on investments whose maturity date matches today.' : 'No maturity is scheduled for today, so nothing becomes newly withdrawable right now.',
+      columns:[
+        { key:'label', label:'Date' },
+        { key:'value', label:'Amount', type:'currency' }
+      ],
+      rows:todayMaturityRows,
+      emptyMessage:'No withdrawal is scheduled for today.'
+    };
+  }
+  return null;
+}
+
+function buildInvestorKpiDetail(type){
+  const investorData = state.investor;
+  if(!investorData || !investorData.investor) return null;
+  const investor = investorData.investor;
+  const records = investorData.records || [];
+  const columns = [
+    { key:'date', label:'Investment Date' },
+    { key:'maturityDate', label:'Maturity Date' },
+    { key:'tenureDays', label:'Tenure', type:'number' },
+    { key:'metricValue', label:'Amount', type:'currency' },
+    { key:'status', label:'Status' }
+  ];
+
+  if(type === 'investor-principal'){
+    return {
+      title:'Total Investment',
+      subtitle:`${investor.investorName} wallet lots`,
+      stats:[
+        { label:'Total Investment', value:investor.totalPrincipal, type:'currency' },
+        { label:'Active Lots', value:investor.activeInvestments, type:'number' },
+        { label:'Matured Lots', value:investor.maturedInvestments, type:'number' }
+      ],
+      columns,
+      rows:getInvestorRowsByMetric(records, 'principal')
+    };
+  }
+  if(type === 'investor-accrued'){
+    return {
+      title:'Profit Till Today',
+      subtitle:'Accrued profit lot by lot',
+      stats:[
+        { label:'Accrued Profit', value:investor.totalAccruedProfit, type:'currency' },
+        { label:'Full Profit Potential', value:investor.totalFullProfit, type:'currency' },
+        { label:'Next Maturity', value:investor.upcomingMaturityDate || '-', type:'text' }
+      ],
+      columns,
+      rows:getInvestorRowsByMetric(records, 'accruedProfit'),
+      emptyMessage:'No accrued profit is available yet.'
+    };
+  }
+  if(type === 'investor-wallet'){
+    return {
+      title:'Wallet Value',
+      subtitle:'Principal plus accrued profit by lot',
+      stats:[
+        { label:'Wallet Value', value:investor.walletValue, type:'currency' },
+        { label:'Investment', value:investor.totalPrincipal, type:'currency' },
+        { label:'Profit Till Today', value:investor.totalAccruedProfit, type:'currency' }
+      ],
+      columns,
+      rows:getInvestorRowsByMetric(records, 'walletValue')
+    };
+  }
+  if(type === 'investor-withdrawable'){
+    return {
+      title:'Withdrawal Amount',
+      subtitle:'Only matured lots are available for withdrawal',
+      stats:[
+        { label:'Withdrawable', value:investor.totalWithdrawable, type:'currency' },
+        { label:'Matured Lots', value:investor.maturedInvestments, type:'number' },
+        { label:'Upcoming Maturity', value:investor.upcomingMaturityDate || '-', type:'text' }
+      ],
+      columns,
+      rows:getInvestorRowsByMetric(records, 'withdrawableAmount'),
+      emptyMessage:'No lot is withdrawable yet.'
+    };
+  }
+  return null;
+}
+
+function openKpiDetail(type){
+  const config = type.startsWith('admin-') ? buildAdminKpiDetail(type) : buildInvestorKpiDetail(type);
+  if(!config){
+    setStatus('Details are not available for this KPI yet.');
+    return;
+  }
+  openDetailModal(config);
+}
+
+function renderAssumptions(){
+  if(!state.assumptions.length){
+    els.assumptionList.innerHTML = '<div class="empty">No editable assumptions found.</div>';
+    els.employeeAssumptionPreview.innerHTML = '<div class="empty">No assumption values available.</div>';
+    els.employeeDerivedPreview.innerHTML = '<div class="empty">No derived values available.</div>';
+    renderRequirementTable();
+    renderRequirementInvestmentTable();
+    renderRequirementOptions();
+    return;
+  }
+  const editableItems = state.assumptions.filter((item) => item.editable !== false);
+  const renderAssumptionCard = (item, index) => `
+    <div class="assumption-item">
+      <div class="field">
+        <label>${item.parameter}${item.editable === false ? ' (Derived)' : ''}</label>
+        <input type="text" data-assumption-value="${index}" value="${String(item.value || '').replace(/"/g, '&quot;')}" ${item.editable === false ? 'disabled' : ''}>
+      </div>
+      ${item.notes ? `<div class="assumption-note">${String(item.notes || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>` : ''}
+    </div>
+  `;
+  const editableHtml = editableItems.map((item) => renderAssumptionCard(item, state.assumptions.indexOf(item))).join('');
+  els.assumptionList.innerHTML = `
+    <section class="assumption-section">
+      <h4 class="section-title">Assumptions</h4>
+      ${editableHtml}
+    </section>
+    <section class="assumption-section" id="derivedAssumptionSection">
+      <h4 class="section-title">Derived</h4>
+    </section>
+  `;
+  bindAssumptionInputs();
+  syncAssumptionStateFromInputs();
+  renderDerivedEditorSection();
+  renderPreviewTable(els.employeeAssumptionPreview, state.assumptions);
+  renderPreviewTable(els.employeeDerivedPreview, state.derivedValues || []);
+  renderRequirementTable();
+  renderRequirementInvestmentTable();
+  renderRequirementOptions();
+}
+
+function renderDerivedEditorSection(){
+  const container = document.getElementById('derivedAssumptionSection');
+  if(!container) return;
+  const derivedHtml = (state.derivedValues || []).length
+    ? state.derivedValues.map((item) => `
+      <div class="assumption-item">
+        <div class="field">
+          <label>${item.parameter}</label>
+          <input type="text" value="${String(item.value || '').replace(/"/g, '&quot;')}" disabled>
+        </div>
+        ${item.notes ? `<div class="assumption-note">${String(item.notes || '').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>` : ''}
+      </div>
+    `).join('')
+    : '<div class="empty">Derived values will appear here.</div>';
+  container.innerHTML = `
+    <h4 class="section-title">Derived</h4>
+    ${derivedHtml}
+  `;
+}
+
+function renderRequirementOptions(){
+  if(!state.requirements.length){
+    els.investmentRequirementInput.innerHTML = '<option value="">No requirement available</option>';
+    return;
+  }
+  els.investmentRequirementInput.innerHTML = state.requirements.map((item) => `
+    <option value="${item.requirementId}">${item.requirementId} | ${item.requirementName} | ${formatCurrency(item.remainingAmount)}</option>
+  `).join('');
+}
+
+function renderRequirementTable(){
+  if(!state.requirements.length){
+    els.employeeRequirementPreview.innerHTML = '<div class="empty">No requirements created yet.</div>';
+    return;
+  }
+  els.employeeRequirementPreview.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Requirement ID</th>
+          <th>Name</th>
+          <th>Period</th>
+          <th>Total Requirement</th>
+          <th>Funded</th>
+          <th>Balance</th>
+          <th>Total Profit</th>
+          <th>Payment Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>${state.requirements.map((item) => `
+        <tr>
+          <td>${item.requirementId}</td>
+          <td>${item.requirementName}</td>
+          <td>${item.periodLabel || '-'}</td>
+          <td>${formatCurrency(item.totalOutflow)}</td>
+          <td>${formatCurrency(item.fundedAmount)}</td>
+          <td>${formatCurrency(item.remainingAmount)}</td>
+          <td>${formatCurrency(item.totalGrossProfit)}</td>
+          <td>${item.paymentDate || '-'}</td>
+          <td>${item.status || 'OPEN'}</td>
+        </tr>
+      `).join('')}</tbody>
+    </table>
+  `;
+}
+
+function renderRequirementInvestmentTable(){
+  if(!state.requirementInvestments.length){
+    els.employeeRequirementInvestmentPreview.innerHTML = '<div class="empty">No investments linked to requirements yet.</div>';
+    return;
+  }
+  els.employeeRequirementInvestmentPreview.innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Requirement ID</th>
+          <th>Investor</th>
+          <th>Mobile</th>
+          <th>Investment Date</th>
+          <th>Amount</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>${state.requirementInvestments.map((item) => `
+        <tr>
+          <td>${item.requirementId}</td>
+          <td>${item.investorName}</td>
+          <td>${item.investorMobile}</td>
+          <td>${item.investmentDate || '-'}</td>
+          <td>${formatCurrency(item.investmentAmount)}</td>
+          <td>${item.notes || '-'}</td>
+        </tr>
+      `).join('')}</tbody>
+    </table>
+  `;
+}
+
+function renderPreviewTable(target, items){
+  if(!items || !items.length){
+    target.innerHTML = '<div class="empty">No values available.</div>';
+    return;
+  }
+  target.innerHTML = `
+    <table>
+      <thead><tr><th>Parameter</th><th>Value</th><th>Notes</th></tr></thead>
+      <tbody>${items.map((item) => `<tr><td>${item.parameter}</td><td>${item.value || '-'}</td><td>${item.notes || '-'}</td></tr>`).join('')}</tbody>
+    </table>
+  `;
+}
+
+async function openAssumptionModal(){
+  setStatus('Loading assumptions from Google Sheet...');
+  await loadAssumptions();
+  renderAssumptions();
+  els.assumptionBackdrop.classList.add('open');
+  els.assumptionModal.classList.add('open');
+}
+
+function closeAssumptionModal(){
+  els.assumptionBackdrop.classList.remove('open');
+  els.assumptionModal.classList.remove('open');
+}
+
+async function saveAssumptions(){
+  const items = state.assumptions.map((item, index) => ({
+    rowIndex:item.rowIndex,
+    parameter:item.parameter,
+    editable:item.editable,
+    value:(document.querySelector(`[data-assumption-value="${index}"]`) || {}).value || '',
+    notes:item.notes || ''
+  }));
+  showLoader('Saving assumptions', 'Please wait while profes updates the assumption sheet and recalculates derived values.');
+  try{
+    setStatus('Saving assumptions to Google Sheet...');
+    const data = await postJson({ action:'SAVE_ASSUMPTIONS', items });
+    if(!data.success) throw new Error(data.message || 'Unable to save assumptions.');
+    state.assumptions = data.assumptions || [];
+    state.derivedValues = data.derivedValues || [];
+    renderAssumptions();
+    setStatus(data.message || 'Assumptions saved.');
+    closeAssumptionModal();
+  } finally {
+    hideLoader();
+  }
+}
+
+function openPasswordModal(){
+  els.passwordBackdrop.classList.add('open');
+  els.passwordModal.classList.add('open');
+}
+
+function closePasswordModal(){
+  els.passwordBackdrop.classList.remove('open');
+  els.passwordModal.classList.remove('open');
+}
+
+function openInvestmentModal(){
+  if(!state.requirements.length){
+    setStatus('Create a requirement first, then add investor investment against it.');
+    return;
+  }
+  els.investmentNameInput.value = '';
+  els.investmentMobileInput.value = '';
+  els.investmentAmountInput.value = '';
+  els.investmentNotesInput.value = '';
+  els.investmentDateInput.value = new Date().toISOString().slice(0, 10);
+  renderRequirementOptions();
+  els.investmentBackdrop.classList.add('open');
+  els.investmentModal.classList.add('open');
+}
+
+function closeInvestmentModal(){
+  els.investmentBackdrop.classList.remove('open');
+  els.investmentModal.classList.remove('open');
+}
+
+function openRequirementModal(){
+  els.requirementDateInput.value = getRequirementDefaultDate();
+  els.requirementNameInput.value = '';
+  els.requirementNotesInput.value = '';
+  els.requirementBackdrop.classList.add('open');
+  els.requirementModal.classList.add('open');
+}
+
+function closeRequirementModal(){
+  els.requirementBackdrop.classList.remove('open');
+  els.requirementModal.classList.remove('open');
+}
+
+function openCreateEmployeeModal(){
+  els.employeeCreateName.value = '';
+  els.employeeCreateUsername.value = '';
+  els.employeeCreateMobile.value = '';
+  els.employeeCreateBackdrop.classList.add('open');
+  els.employeeCreateModal.classList.add('open');
+}
+
+function closeCreateEmployeeModal(){
+  els.employeeCreateBackdrop.classList.remove('open');
+  els.employeeCreateModal.classList.remove('open');
+}
+
+function openCreateInvestorModal(){
+  els.investorCreateName.value = '';
+  els.investorCreateMobile.value = '';
+  els.investorCreateBackdrop.classList.add('open');
+  els.investorCreateModal.classList.add('open');
+}
+
+function closeCreateInvestorModal(){
+  els.investorCreateBackdrop.classList.remove('open');
+  els.investorCreateModal.classList.remove('open');
+}
+
+async function saveInvestment(){
+  const payload = {
+    action:'SAVE_REQUIREMENT_INVESTMENT',
+    requirementId: els.investmentRequirementInput.value,
+    investmentDate: els.investmentDateInput.value,
+    investorName: els.investmentNameInput.value,
+    investorMobile: els.investmentMobileInput.value,
+    investmentAmount: els.investmentAmountInput.value,
+    notes: els.investmentNotesInput.value
+  };
+  showLoader('Saving investment', 'Please wait while profes links the investor funding to the selected requirement.');
+  try{
+    setStatus('Saving investment entry...');
+    const data = await postJson(payload);
+    if(!data.success) throw new Error(data.message || 'Unable to save investment.');
+    state.requirements = data.requirements || state.requirements;
+    state.requirementInvestments = data.requirementInvestments || state.requirementInvestments;
+    renderRequirementTable();
+    renderRequirementInvestmentTable();
+    renderRequirementOptions();
+    setStatus(data.message || 'Investment saved.');
+    closeInvestmentModal();
+  } finally {
+    hideLoader();
+  }
+}
+
+async function saveRequirement(){
+  const payload = {
+    action:'CREATE_REQUIREMENT',
+    requirementDate: els.requirementDateInput.value,
+    requirementName: els.requirementNameInput.value,
+    notes: els.requirementNotesInput.value,
+    createdBy: state.authUser && state.authUser.username
+  };
+  showLoader('Creating requirement', 'Please wait while profes builds the requirement snapshot from the current assumptions.');
+  try{
+    setStatus('Creating requirement from assumptions...');
+    const data = await postJson(payload);
+    if(!data.success) throw new Error(data.message || 'Unable to create requirement.');
+    state.assumptions = data.assumptions || state.assumptions;
+    state.derivedValues = data.derivedValues || state.derivedValues;
+    state.requirements = data.requirements || state.requirements;
+    state.requirementInvestments = data.requirementInvestments || state.requirementInvestments;
+    renderAssumptions();
+    setStatus(data.message || 'Requirement created.');
+    closeRequirementModal();
+  } finally {
+    hideLoader();
+  }
+}
+
+async function saveCreateEmployee(){
+  const payload = {
+    actorRole: 'ADMIN',
+    actorUsername: state.authUser && state.authUser.username,
+    actorPassword: state.authUser && state.authUser.password,
+    name: els.employeeCreateName.value,
+    username: els.employeeCreateUsername.value,
+    mobile: els.employeeCreateMobile.value
+  };
+  showLoader('Creating employee', 'Please wait while profes creates the employee login with the default password.');
+  try{
+    setStatus('Creating employee...');
+    const data = await createEmployee(payload);
+    if(!data.success) throw new Error(data.message || 'Unable to create employee.');
+    setStatus(`${data.message} Default password is password.`);
+    closeCreateEmployeeModal();
+  } finally {
+    hideLoader();
+  }
+}
+
+async function saveCreateInvestor(){
+  const payload = {
+    actorRole: 'ADMIN',
+    actorUsername: state.authUser && state.authUser.username,
+    actorPassword: state.authUser && state.authUser.password,
+    name: els.investorCreateName.value,
+    mobile: els.investorCreateMobile.value
+  };
+  showLoader('Creating investor', 'Please wait while profes creates the investor login and wallet access.');
+  try{
+    setStatus('Creating investor...');
+    const data = await createInvestor(payload);
+    if(!data.success) throw new Error(data.message || 'Unable to create investor.');
+    setStatus(`${data.message} Default password is password.`);
+    closeCreateInvestorModal();
+  } finally {
+    hideLoader();
+  }
+}
+
+function setAuthRole(role){
+  state.role = role;
+  applyRoleMeta(role);
+  els.roleSwitcher.classList.toggle('hidden', ROLE_LOCKED);
+  els.authStatusText.textContent = role === 'admin'
+    ? 'Use the admin link to review requirements, investors, and funding.'
+    : role === 'investor'
+      ? 'Use your investor mobile number and password to open the wallet.'
+      : 'Use your employee username and password to manage assumptions and requirements.';
+  els.roleAdminButton.classList.toggle('active', role === 'admin');
+  els.roleInvestorButton.classList.toggle('active', role === 'investor');
+  els.roleEmployeeButton.classList.toggle('active', role === 'employee');
+  els.authAdminPanel.classList.toggle('hidden', role !== 'admin');
+  els.authInvestorPanel.classList.toggle('hidden', role !== 'investor');
+  els.authEmployeePanel.classList.toggle('hidden', role !== 'employee');
+}
+
+function logout(){
+  state.mode = 'admin';
+  state.authUser = null;
+  state.admin = null;
+  state.investor = null;
+  state.assumptions = [];
+  state.derivedValues = [];
+  state.requirements = [];
+  state.requirementInvestments = [];
+  state.mobile = '';
+  clearSession();
+  els.appShell.classList.add('hidden');
+  els.authShell.classList.remove('hidden');
+  els.adminView.classList.remove('hidden');
+  els.investorView.classList.add('hidden');
+  els.employeeView.classList.add('hidden');
+  els.adminIntro.classList.remove('hidden');
+  els.investorLogin.classList.add('hidden');
+  els.employeePanel.classList.add('hidden');
+  els.statusText.textContent = 'Choose a role to continue.';
+  closeAssumptionModal();
+  closePasswordModal();
+  closeInvestmentModal();
+  closeRequirementModal();
+  closeRequirementDetail();
+  closeCreateInvestorModal();
+  closeCreateEmployeeModal();
+  hideLoader();
+  setAuthRole(ENTRY_ROLE);
+  els.authStatusText.textContent = 'Logged out successfully.';
+}
+
+function enterApp(role){
+  state.mode = role;
+  applyRoleMeta(role);
+  els.authShell.classList.add('hidden');
+  els.appShell.classList.remove('hidden');
+  els.adminView.classList.toggle('hidden', role !== 'admin');
+  els.investorView.classList.toggle('hidden', role !== 'investor');
+  els.employeeView.classList.toggle('hidden', role !== 'employee');
+  els.adminIntro.classList.toggle('hidden', role !== 'admin');
+  els.investorLogin.classList.toggle('hidden', role !== 'investor');
+  els.employeePanel.classList.toggle('hidden', role !== 'employee');
+}
+
+els.roleAdminButton.addEventListener('click', () => setAuthRole('admin'));
+els.roleInvestorButton.addEventListener('click', () => setAuthRole('investor'));
+els.roleEmployeeButton.addEventListener('click', () => setAuthRole('employee'));
+els.installAppButton.addEventListener('click', async () => {
+  if(!deferredInstallPrompt){
+    setStatus('Install is available from the browser menu on this device.');
+    return;
+  }
+  deferredInstallPrompt.prompt();
+  try {
+    await deferredInstallPrompt.userChoice;
+  } catch (error) {}
+  deferredInstallPrompt = null;
+  els.installAppButton.classList.add('hidden');
+});
+els.enterAdminButton.addEventListener('click', async () => {
+  try {
+    showLoader('Signing in as admin', 'Please wait while profes verifies your admin access.');
+    const username = els.authAdminUsername.value.trim();
+    const password = els.authAdminPassword.value;
+    const result = await login('ADMIN', username, password);
+    if(!result.success) throw new Error(result.message);
+    state.authUser = { role:'ADMIN', username, password };
+    if(result.requirePasswordChange){
+      hideLoader();
+      els.changeCurrentPassword.value = password;
+      openPasswordModal();
+      return;
+    }
+    enterApp('admin');
+    saveSession();
+    loadAdmin().catch((error) => setStatus(error.message));
+  } catch (error) {
+    els.authStatusText.textContent = error.message;
+    hideLoader();
+  }
+});
+els.enterInvestorButton.addEventListener('click', async () => {
+  try {
+    showLoader('Signing in as investor', 'Please wait while profes verifies your wallet access.');
+    const username = els.authInvestorMobile.value.trim();
+    const password = els.authInvestorPassword.value;
+    const result = await login('INVESTOR', username, password);
+    if(!result.success) throw new Error(result.message);
+    state.authUser = { role:'INVESTOR', username:(result.user.mobile || username), password };
+    const mobile = result.user.mobile || username;
+    els.mobileInput.value = mobile;
+    if(result.requirePasswordChange){
+      hideLoader();
+      els.changeCurrentPassword.value = password;
+      openPasswordModal();
+      return;
+    }
+    enterApp('investor');
+    state.mobile = mobile;
+    saveSession();
+    loadInvestor(mobile).catch((error) => setStatus(error.message));
+  } catch (error) {
+    els.authStatusText.textContent = error.message;
+    hideLoader();
+  }
+});
+els.enterEmployeeButton.addEventListener('click', async () => {
+  try {
+    showLoader('Signing in as employee', 'Please wait while profes opens the employee panel.');
+    const username = els.authEmployeeUsername.value.trim();
+    const password = els.authEmployeePassword.value;
+    const result = await login('EMPLOYEE', username, password);
+    if(!result.success) throw new Error(result.message);
+    state.authUser = { role:'EMPLOYEE', username, password };
+    if(result.requirePasswordChange){
+      hideLoader();
+      els.changeCurrentPassword.value = password;
+      openPasswordModal();
+      return;
+    }
+    enterApp('employee');
+    saveSession();
+    loadAssumptions().catch((error) => setStatus(error.message));
+  } catch (error) {
+    els.authStatusText.textContent = error.message;
+    hideLoader();
+  }
+});
+els.walletLoginButton.addEventListener('click', () => loadInvestor(els.mobileInput.value).catch((error) => setStatus(error.message)));
+els.walletRefreshButton.addEventListener('click', () => loadInvestor(els.mobileInput.value || state.mobile).catch((error) => setStatus(error.message)));
+els.openAssumptionsButton.addEventListener('click', () => openAssumptionModal().catch((error) => setStatus(error.message)));
+els.openRequirementButton.addEventListener('click', openRequirementModal);
+els.refreshAssumptionsButton.addEventListener('click', () => loadAssumptions().catch((error) => setStatus(error.message)));
+els.openInvestmentButton.addEventListener('click', openInvestmentModal);
+els.downloadPreviewButton.addEventListener('click', () => window.print());
+els.openCreateInvestorButton.addEventListener('click', openCreateInvestorModal);
+els.openCreateEmployeeButton.addEventListener('click', openCreateEmployeeModal);
+els.logoutButton.addEventListener('click', logout);
+els.closeAssumptionButton.addEventListener('click', closeAssumptionModal);
+els.assumptionBackdrop.addEventListener('click', closeAssumptionModal);
+els.saveAssumptionButton.addEventListener('click', () => saveAssumptions().catch((error) => setStatus(error.message)));
+els.passwordBackdrop.addEventListener('click', () => {});
+els.savePasswordButton.addEventListener('click', async () => {
+  try {
+    showLoader('Updating password', 'Please wait while profes secures your account and reloads the right dashboard.');
+    if(els.changeNewPassword.value !== els.changeConfirmPassword.value){
+      throw new Error('New password and confirm password do not match.');
+    }
+    const data = await changePassword(state.authUser.role, state.authUser.username, els.changeCurrentPassword.value, els.changeNewPassword.value);
+    if(!data.success) throw new Error(data.message || 'Unable to change password.');
+    state.authUser.password = els.changeNewPassword.value;
+    saveSession();
+    closePasswordModal();
+    enterApp(state.authUser.role === 'ADMIN' ? 'admin' : state.authUser.role === 'INVESTOR' ? 'investor' : 'employee');
+    if(state.authUser.role === 'ADMIN'){
+      loadAdmin().catch((error) => setStatus(error.message));
+    } else if(state.authUser.role === 'INVESTOR'){
+      loadInvestor(els.mobileInput.value || els.authInvestorMobile.value).catch((error) => setStatus(error.message));
+    } else {
+      loadAssumptions().catch((error) => setStatus(error.message));
+    }
+    setStatus(data.message || 'Password changed.');
+  } catch (error) {
+    setStatus(error.message);
+  } finally {
+    hideLoader();
+  }
+});
+els.closeInvestmentButton.addEventListener('click', closeInvestmentModal);
+els.investmentBackdrop.addEventListener('click', closeInvestmentModal);
+els.saveInvestmentButton.addEventListener('click', () => saveInvestment().catch((error) => setStatus(error.message)));
+els.closeRequirementButton.addEventListener('click', closeRequirementModal);
+els.requirementBackdrop.addEventListener('click', closeRequirementModal);
+els.saveRequirementButton.addEventListener('click', () => saveRequirement().catch((error) => setStatus(error.message)));
+els.closeRequirementDetailButton.addEventListener('click', closeRequirementDetail);
+els.requirementDetailBackdrop.addEventListener('click', closeRequirementDetail);
+els.closeCreateInvestorButton.addEventListener('click', closeCreateInvestorModal);
+els.investorCreateBackdrop.addEventListener('click', closeCreateInvestorModal);
+els.saveCreateInvestorButton.addEventListener('click', () => saveCreateInvestor().catch((error) => setStatus(error.message)));
+els.closeCreateEmployeeButton.addEventListener('click', closeCreateEmployeeModal);
+els.employeeCreateBackdrop.addEventListener('click', closeCreateEmployeeModal);
+els.saveCreateEmployeeButton.addEventListener('click', () => saveCreateEmployee().catch((error) => setStatus(error.message)));
+
+async function initializeApp(){
+  setupInstallPrompt();
+  registerPwa();
+  bindKpiCards();
+  setAuthRole(ENTRY_ROLE);
+  if(INITIAL_MOBILE){
+    els.authInvestorMobile.value = INITIAL_MOBILE;
+    els.mobileInput.value = INITIAL_MOBILE;
+  }
+  const restored = await restoreSession();
+  if(!restored){
+    els.appShell.classList.add('hidden');
+    els.authShell.classList.remove('hidden');
+  }
+}
+
+initializeApp();
+</script>
+</body>
+</html>

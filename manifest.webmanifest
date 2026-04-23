@@ -1,0 +1,19 @@
+{
+  "name": "profes Investor Wallet Dashboard",
+  "short_name": "profes",
+  "description": "Investor, admin, and employee dashboard for investment requirements, assumptions, and wallet tracking.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#eef5fb",
+  "theme_color": "#2457a6",
+  "icons": [
+    {
+      "src": "./assets/profes-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
