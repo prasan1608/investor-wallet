@@ -10,7 +10,7 @@
   "theme_color": "#2457a6",
   "icons": [
     {
-      "src": "./assets/profes-logo.png",
+      "src": "https://p1.ikotech.in/logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

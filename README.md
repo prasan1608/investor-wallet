@@ -9,7 +9,7 @@ GitHub Pages ready PWA files for the profes dashboard.
 - `manifest.webmanifest`
 - `sw.js`
 - `offline.html`
-- `assets/profes-logo.png`
+- Logo is loaded from `https://p1.ikotech.in/logo.png`
 
 ## Setup
 

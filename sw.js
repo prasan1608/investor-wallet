@@ -4,8 +4,7 @@ const PRECACHE_URLS = [
   './',
   './index.html',
   './manifest.webmanifest',
-  './offline.html',
-  './assets/profes-logo.png'
+  './offline.html'
 ];
 
 self.addEventListener('install', (event) => {
